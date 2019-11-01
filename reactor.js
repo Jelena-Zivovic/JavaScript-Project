@@ -16,8 +16,6 @@ function main() {
     //set starting level
     set_level();
 
-    //TODO set time
-
     //set score 
     set_score();
     
@@ -62,6 +60,10 @@ function main() {
         images[i].style.left = String((i+3) * 50) + "px";
         offeredImages.appendChild(images[i]);
     }
+
+    start = document.getElementById("start");
+    start.style.cursor = "grab";
+
 
     
 }
@@ -127,5 +129,8 @@ function set_score() {
     var score = document.getElementById("score");
     score.appendChild(paragraphScore);
 }
+
+
+
 main();
 
