@@ -1,0 +1,36 @@
+@font-face {
+    font-family: lobster;
+    src: url("Lobster 1.4.otf");
+}
+
+body {
+    width: 1000px ;
+    height: 600px;
+    background-color:papayawhip; 
+    margin:auto;
+
+}
+
+
+#mainHeading {
+    color:darkolivegreen;
+    text-align: center;
+    text-shadow: 1px 1px black;
+    font-family: lobster;
+    font-size:35px;
+}
+
+#requiredShape {
+    position: relative;
+    top: 25px;
+}
+
+#offeredShapes {
+    position: relative;
+    top: 400px;
+    left: 65px;
+    
+
+}
+
+
