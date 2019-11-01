@@ -20,19 +20,48 @@ body {
     font-size:35px;
 }
 
-#requiredShape {
+#information {
     position: relative;
-    top: 150px;
-    width: 1000px;
-    height: 150px;
-   
-}
-
-#offeredShapes {
-    position: relative;
-    top: 250px;
+    top: 50px;
     width: 1000px;
     height: 100px;
+}
+
+#level {
+    position: relative;
+    left: 50px;
+    width: 300px;
+    height: 100px;
+}
+
+#time {
+    position: relative;
+    top: -100px;
+    left: 350px;
+    width: 300px;
+    height: 100px;
+}
+
+#score {
+    position: relative;
+    top: -240px;
+    left: 650px;
+    width: 300px;
+    height: 100px;
+}
+
+#requiredImage {
+    position: relative;
+    top: 50px;
+    width: 1000px;
+    height: 250px;
+}
+
+#offeredImages {
+    position: relative;
+    top: 50px;
+    width: 1000px;
+    height: 150px;
 
 }
 

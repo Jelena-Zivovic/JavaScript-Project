@@ -2,12 +2,25 @@
 
 var requiredImage;
 var offeredImages;
+var information;
 
 var current_level = 1;
-
+var current_score = 0;
 
 //initialize game
 function main() {
+
+    //set information
+    information = document.getElementById("information");
+
+    //set starting level
+    set_level();
+
+    //TODO set time
+
+    //set score 
+    set_score();
+    
     
     //set required image
     requiredImage = document.getElementById("requiredImage");
@@ -61,8 +74,9 @@ function checkIfGameEnded() {
 
 }
 
-function get_different_random_numbers(required) {
-    var numbers = [required];
+//this function returns array of 5 different numbers including required_number
+function get_different_random_numbers(required_number) {
+    var numbers = [required_number];
 
     while (numbers.length != 5) {
         var random_number = Math.ceil(Math.random()*10);
@@ -88,5 +102,30 @@ function shuffle(array) {
     return array;
 }
 
+function set_level() {
+    var paragraphLevel = document.createElement("p");
+    var textLevel = document.createTextNode("Level: " + String(current_level));
+    paragraphLevel.appendChild(textLevel);
+    paragraphLevel.style.fontFamily = "lobster";
+    paragraphLevel.style.color = "darkolivegreen";
+    paragraphLevel.style.textAlign = "left";
+    paragraphLevel.style.fontSize = "40px";
+
+    var level = document.getElementById("level");
+    level.appendChild(paragraphLevel);
+}
+
+function set_score() {
+    var paragraphScore = document.createElement("p");
+    var textScore = document.createTextNode("Score: " + String(current_score));
+    paragraphScore.appendChild(textScore);
+    paragraphScore.style.fontFamily = "lobster";
+    paragraphScore.style.color = "darkolivegreen";
+    paragraphScore.style.textAlign = "right";
+    paragraphScore.style.fontSize = "40px";
+
+    var score = document.getElementById("score");
+    score.appendChild(paragraphScore);
+}
 main();
 
