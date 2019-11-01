@@ -3,6 +3,7 @@
 var requiredImage;
 var offeredImages;
 var information;
+var start;
 
 var current_level = 1;
 var current_score = 0;
@@ -19,57 +20,26 @@ function main() {
     //set score 
     set_score();
     
-    
     //set required image
     requiredImage = document.getElementById("requiredImage");
 
-    var random_number = Math.ceil(Math.random()*10);
-    var name_of_current_image = String(random_number) + ".png";
-
-    var image = document.createElement("img");
-    image.src = "pictures/level_1/" + name_of_current_image;
-    image.width = 200;
-    image.height = 200;
-
-    requiredImage.appendChild(image);
-    image.style.position = "relative";
-    image.style.top = "25px";
-    image.style.left = "400px";
+    set_required_image();
 
     //set offered images
 
     offeredImages = document.getElementById("offeredImages");
 
-    var images = [];
-
-    var indexes = get_different_random_numbers(random_number);
-
-    shuffle(indexes);
-
-    for (var i = 0; i < 5; i++) {
-        images[i] = document.createElement("img");
-        var name = "pictures/level_1/" + String(indexes[i]) + ".png";
-        images[i].src = name;
-        images[i].width = 100;
-        images[i].height = 100;
-        images[i].style.position = "relative";
-        images[i].style.top = "25px";
-    }
-
-    for (var i = 0; i < 5; i++) {
-        images[i].style.left = String((i+3) * 50) + "px";
-        offeredImages.appendChild(images[i]);
-    }
+    set_offered_images();
 
     start = document.getElementById("start");
     start.style.cursor = "grab";
 
-
+    start.addEventListener("click", startGame);
     
 }
 
 function startGame() {
-
+    
 }
 
 function checkIfGameEnded() {
@@ -130,7 +100,47 @@ function set_score() {
     score.appendChild(paragraphScore);
 }
 
+function set_required_image() {
+    var random_number = Math.ceil(Math.random()*10);
+    var name_of_current_image = String(random_number) + ".png";
 
+    var image = document.createElement("img");
+    image.src = "pictures/level_1/" + name_of_current_image;
+    image.width = 200;
+    image.height = 200;
+
+    requiredImage.appendChild(image);
+    image.style.position = "relative";
+    image.style.top = "25px";
+    image.style.left = "400px";
+}
+
+function set_offered_images() {
+    var images = [];
+
+    var last_index_slash = requiredImage.children[0].src.lastIndexOf("/");
+    var last_index_dot = requiredImage.children[0].src.lastIndexOf(".");
+    var number = Number(requiredImage.children[0].src.substring(last_index_slash+1, last_index_dot));
+
+    var indexes = get_different_random_numbers(number);
+
+    shuffle(indexes);
+
+    for (var i = 0; i < 5; i++) {
+        images[i] = document.createElement("img");
+        var name = "pictures/level_1/" + String(indexes[i]) + ".png";
+        images[i].src = name;
+        images[i].width = 100;
+        images[i].height = 100;
+        images[i].style.position = "relative";
+        images[i].style.top = "25px";
+    }
+
+    for (var i = 0; i < 5; i++) {
+        images[i].style.left = String((i+3) * 50) + "px";
+        offeredImages.appendChild(images[i]);
+    }
+}
 
 main();
 
