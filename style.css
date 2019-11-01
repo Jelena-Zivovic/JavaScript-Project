@@ -22,14 +22,17 @@ body {
 
 #requiredShape {
     position: relative;
-    top: 25px;
+    top: 150px;
+    width: 1000px;
+    height: 150px;
+   
 }
 
 #offeredShapes {
     position: relative;
-    top: 400px;
-    left: 65px;
-    
+    top: 250px;
+    width: 1000px;
+    height: 100px;
 
 }
 
