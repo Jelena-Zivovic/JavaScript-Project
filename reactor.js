@@ -127,6 +127,18 @@ function add_click_events_offered_images() {
 function offered_image_clicked(image_number) {
     if (requiredImage.children[0].src == offeredImages.children[image_number].src) {
         current_score += 1;
+        if (current_score == 15) {
+            current_level = 2;
+            document.getElementById("p_level").innerHTML = "Level: " + String(current_level);
+            
+        }
+        else if (current_score == 30) {
+            current_level = 3;
+            document.getElementById("p_level").innerHTML = "Level: 3";
+        }
+        else if (current_score == 45) {
+            game_over();
+        }
         document.getElementById("p_score").innerHTML = "Score: " + String(current_score);
         change_required_image();
         change_offered_images();
@@ -203,7 +215,13 @@ function change_offered_images() {
 }
 
 function game_over() {
-    window.alert("Game over!");
+    if (current_score == 45) {
+        window.alert("Congratulations, you won!");
+    }
+    else {
+        window.alert("Loser!");
+        
+    }
 }
 
 main();

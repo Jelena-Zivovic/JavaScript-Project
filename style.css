@@ -21,6 +21,15 @@ body {
     font-size:50px;
 }
 
+#start:hover {
+    background-color: palegoldenrod;;
+
+}
+
+#start:active {
+    text-shadow: 3px 3px black;
+}
+
 #information {
     width: 1000px;
     height: 100px;
