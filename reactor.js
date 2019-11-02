@@ -4,6 +4,7 @@ var requiredImage;
 var offeredImages;
 var information;
 var start;
+var timer;
 
 //this indicator exists because you can start the game just once
 var indicator_start_click = false;
@@ -31,7 +32,21 @@ function main() {
     var level = document.getElementById("level");
     level.appendChild(paragraphLevel);
 
-    //set score 
+    //set starting time
+    var paragraphTime = document.createElement("p");
+    paragraphTime.id = "p_time";
+    var textTime = document.createTextNode("Time left: 03:00");
+    paragraphTime.appendChild(textTime);
+    paragraphTime.style.fontFamily = "lobster";
+    paragraphTime.style.color = "darkolivegreen";
+    paragraphTime.style.textAlign = "center";
+    paragraphTime.style.fontSize = "40px";
+    paragraphTime.style.overflow = "hidden";
+
+    var time = document.getElementById("time");
+    time.appendChild(paragraphTime);
+
+    //set starting score 
     var paragraphScore = document.createElement("p");
     paragraphScore.id = "p_score";
     var textScore = document.createTextNode("Score: " + String(current_score));
@@ -98,11 +113,39 @@ function main() {
     start.addEventListener("click", startGame);
     
 }
-
 function startGame() {
     if (!indicator_start_click) {
         add_click_events_offered_images();
         indicator_start_click = true;
+        timer = setInterval(change_time_left, 10);
+
+    }
+}
+
+function change_time_left() {
+    var time_text = document.getElementById("p_time").textContent;
+    var time_left_seconds = Number(time_text[12]);
+    var time_left_hundredth = Number(time_text.substring(14, 16));
+    if (time_left_seconds == 0 && time_left_hundredth == 0) {
+        clearInterval(timer);
+        game_over();
+    }
+    else {
+       if (time_left_hundredth == 0) {
+           time_left_seconds--;
+           time_left_hundredth = 99;
+           document.getElementById("p_time").textContent = "Time left: 0" + String(time_left_seconds) + ":" + String(time_left_hundredth);
+       }
+       else {
+           time_left_hundredth--;
+           if (time_left_hundredth < 10) {
+               document.getElementById("p_time").textContent = "Time left: 0" + String(time_left_seconds) + ":0" + String(time_left_hundredth);
+           }
+           else {
+                document.getElementById("p_time").textContent = "Time left: 0" + String(time_left_seconds) + ":" + String(time_left_hundredth);
+           }
+       }
+    
     }
 }
 
@@ -144,6 +187,19 @@ function offered_image_clicked(image_number) {
         document.getElementById("p_score").innerHTML = "Score: " + String(current_score);
         change_required_image();
         change_offered_images();
+
+        if (current_level == 1) {
+            document.getElementById("p_time").textContent = "Time left: 03:00";
+        }
+        else if (current_level == 2) {
+            document.getElementById("p_time").textContent = "Time left: 02:70";
+        }
+        else if (current_level == 3) {
+            document.getElementById("p_time").textContent = "Time left: 02:40";
+        }
+        
+
+       
     }
     else {
         game_over();
