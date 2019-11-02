@@ -165,12 +165,17 @@ function shuffle(array) {
 }
 
 function change_required_image() {
+
+    var old_src = requiredImage.children[0].src;
+    var last_index_slash = old_src.lastIndexOf("/");
+    var level_index_slash = old_src.substring(0, last_index_slash).lastIndexOf("/");
+
     var random_number = Math.ceil(Math.random()*10);
 
-    var index_last_slash = requiredImage.children[0].src.lastIndexOf("/")+1;
-    var new_src = requiredImage.children[0].src.substring(0, index_last_slash) + String(random_number) + ".png";
+    var new_src = old_src.substring(0, level_index_slash) + "/level_" + String(current_level) + "/" + String(random_number) + ".png";
 
     requiredImage.children[0].src = new_src;
+
 
 }
 
@@ -180,18 +185,18 @@ function change_offered_images() {
     var last_index_dot = requiredImage.children[0].src.lastIndexOf(".");
     var number = Number(requiredImage.children[0].src.substring(last_index_slash+1, last_index_dot));
 
-    console.log(requiredImage.children[0].src.substring(last_index_slash+1, last_index_dot));
 
     var indexes = get_different_random_numbers(number);
-    console.log(indexes);
 
     shuffle(indexes);
 
     for (var i = 0; i < 5; i++) {
-        number = Math.ceil(Math.random()*10);
+        var old_src = offeredImages.children[i].src;
+        var last_index_slash = old_src.lastIndexOf("/");
+        var level_index_slash = old_src.substring(0, last_index_slash).lastIndexOf("/");
 
-        var last_index_slash = offeredImages.children[i].src.lastIndexOf("/") + 1;
-        var new_src = offeredImages.children[0].src.substring(0, last_index_slash) + String(indexes[i]) + ".png";
+
+        var new_src = old_src.substring(0, level_index_slash) + "/level_" + String(current_level) + "/" + String(indexes[i]) + ".png";
 
         offeredImages.children[i].src = new_src;
     }
