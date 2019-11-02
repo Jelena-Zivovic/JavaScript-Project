@@ -52,6 +52,7 @@ function main() {
     var name_of_current_image = String(random_number) + ".png";
 
     var image = document.createElement("img");
+    image.id = "img_requiredImage"
     image.src = "pictures/level_1/" + name_of_current_image;
     image.width = 200;
     image.height = 200;
@@ -77,6 +78,7 @@ function main() {
 
     for (var i = 0; i < 5; i++) {
         images[i] = document.createElement("img");
+        images[i].id = "img_offeredImage" + String(i+1);
         var name = "pictures/level_1/" + String(indexes[i]) + ".png";
         images[i].src = name;
         images[i].width = 100;

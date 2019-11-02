@@ -67,10 +67,30 @@ body {
     height: 250px;
 }
 
+#img_requiredImage:hover {
+    cursor: not-allowed;
+}
+
 #offeredImages {
     width: 1000px;
     height: 150px;
 
+}
+
+#img_offeredImage1:hover {
+    cursor: pointer;
+}
+#img_offeredImage2:hover {
+    cursor: pointer;
+}
+#img_offeredImage3:hover {
+    cursor: pointer;
+}
+#img_offeredImage4:hover {
+    cursor: pointer;
+}
+#img_offeredImage5:hover {
+    cursor: pointer;
 }
 
 
