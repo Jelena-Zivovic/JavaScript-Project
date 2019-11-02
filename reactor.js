@@ -128,6 +128,8 @@ function offered_image_clicked(image_number) {
     if (requiredImage.children[0].src == offeredImages.children[image_number].src) {
         current_score += 1;
         document.getElementById("p_score").innerHTML = "Score: " + String(current_score);
+        change_required_image();
+        change_offered_images();
     }
     else {
         game_over();
@@ -162,6 +164,38 @@ function shuffle(array) {
     return array;
 }
 
+function change_required_image() {
+    var random_number = Math.ceil(Math.random()*10);
+
+    var index_last_slash = requiredImage.children[0].src.lastIndexOf("/")+1;
+    var new_src = requiredImage.children[0].src.substring(0, index_last_slash) + String(random_number) + ".png";
+
+    requiredImage.children[0].src = new_src;
+
+}
+
+function change_offered_images() {
+
+    var last_index_slash = requiredImage.children[0].src.lastIndexOf("/");
+    var last_index_dot = requiredImage.children[0].src.lastIndexOf(".");
+    var number = Number(requiredImage.children[0].src.substring(last_index_slash+1, last_index_dot));
+
+    console.log(requiredImage.children[0].src.substring(last_index_slash+1, last_index_dot));
+
+    var indexes = get_different_random_numbers(number);
+    console.log(indexes);
+
+    shuffle(indexes);
+
+    for (var i = 0; i < 5; i++) {
+        number = Math.ceil(Math.random()*10);
+
+        var last_index_slash = offeredImages.children[i].src.lastIndexOf("/") + 1;
+        var new_src = offeredImages.children[0].src.substring(0, last_index_slash) + String(indexes[i]) + ".png";
+
+        offeredImages.children[i].src = new_src;
+    }
+}
 
 function game_over() {
     window.alert("Game over!");
