@@ -82,9 +82,12 @@ function set_level() {
     paragraphLevel.style.color = "darkolivegreen";
     paragraphLevel.style.textAlign = "left";
     paragraphLevel.style.fontSize = "40px";
+    paragraphLevel.style.overflow = "hidden";
 
     var level = document.getElementById("level");
-    level.appendChild(paragraphLevel);
+    level.appendChild(paragraphLevel); 
+
+    
 }
 
 function set_score() {
@@ -95,6 +98,7 @@ function set_score() {
     paragraphScore.style.color = "darkolivegreen";
     paragraphScore.style.textAlign = "right";
     paragraphScore.style.fontSize = "40px";
+    paragraphScore.style.overflow = "hidden";
 
     var score = document.getElementById("score");
     score.appendChild(paragraphScore);

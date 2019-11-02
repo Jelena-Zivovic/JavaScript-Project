@@ -13,7 +13,6 @@ body {
 
 
 #start {
-    height: 50px;
     color:darkolivegreen;
     text-align: center;
     text-shadow: 1px 1px black;
@@ -23,45 +22,43 @@ body {
 }
 
 #information {
-    position: relative;
-    top: 50px;
     width: 1000px;
     height: 100px;
 }
 
 #level {
+    display: inline-block;
     position: relative;
     left: 50px;
     width: 300px;
     height: 100px;
+    margin: 0;
 }
 
 #time {
+    display: inline-block;
     position: relative;
-    top: -100px;
-    left: 350px;
+    left: 50px;
     width: 300px;
     height: 100px;
+    margin: 0;
 }
 
 #score {
+    display: inline-block;
     position: relative;
-    top: -240px;
-    left: 650px;
+    left: 50px;
     width: 300px;
     height: 100px;
+    margin: 0;
 }
 
 #requiredImage {
-    position: relative;
-    top: 50px;
     width: 1000px;
     height: 250px;
 }
 
 #offeredImages {
-    position: relative;
-    top: 50px;
     width: 1000px;
     height: 150px;
 
