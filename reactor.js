@@ -65,7 +65,7 @@ function main() {
     //set required image
     requiredImage = document.getElementById("requiredImage");
 
-    var random_number = Math.ceil(Math.random()*10);
+    var random_number = Math.ceil(Math.random()*15);
     var name_of_current_image = String(random_number) + ".png";
 
     var image = document.createElement("img");
@@ -215,7 +215,7 @@ function get_different_random_numbers(required_number) {
     var numbers = [required_number];
 
     while (numbers.length != 5) {
-        var random_number = Math.ceil(Math.random()*10);
+        var random_number = Math.ceil(Math.random()*15);
 
         if (!numbers.includes(random_number)) {
             numbers.push(random_number);
@@ -244,7 +244,7 @@ function change_required_image() {
     var last_index_slash = old_src.lastIndexOf("/");
     var level_index_slash = old_src.substring(0, last_index_slash).lastIndexOf("/");
 
-    var random_number = Math.ceil(Math.random()*10);
+    var random_number = Math.ceil(Math.random()*15);
 
     var new_src = old_src.substring(0, level_index_slash) + "/level_" + String(current_level) + "/" + String(random_number) + ".png";
 
@@ -292,4 +292,6 @@ function game_over() {
 }
 
 main();
+
+
 
