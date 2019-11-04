@@ -285,6 +285,7 @@ function game_over() {
     }
     else {
         console.log("loser");
+        document.getElementsByTagName("body")[0].style.opacity = "50%";
         
     }
 
