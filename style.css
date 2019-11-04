@@ -105,3 +105,16 @@ body {
     border-radius: 50px;
     overflow: hidden;
 }
+
+#question {
+    display: none;
+    width: 500px;
+    height: 100px;
+    position: relative;
+    top: -427px;
+    left: 250px;
+    background-color: papayawhip;
+    overflow: hidden;
+    border: 0.2px solid papayawhip;
+    border-radius: 50px;
+}

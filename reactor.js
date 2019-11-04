@@ -4,18 +4,23 @@ var requiredImage;
 var offeredImages;
 var information;
 var animation;
+var question;
 var start;
-var timer;
+var timer_changing_images;
+var timer_animation;
 
 //this indicator exists because you can start the game just once
 var indicator_start_click = false;
 
 var indicator_game_ended = false;
 
+var event_listeners_added = false;
+
 var current_level = 1;
 var current_score = 0;
 
 var number_of_images = 20;
+var position_animation = 800;
 
 //initialize game
 function main() {
@@ -113,6 +118,7 @@ function main() {
     }
 
     animation = document.getElementById("animation");
+    question = document.getElementById("question");
     
     start = document.getElementById("start");
     start.style.cursor = "grab";
@@ -123,8 +129,10 @@ function main() {
 function startGame() {
     if (!indicator_start_click) {
         add_click_events_offered_images();
+        event_listeners_added = true;
         indicator_start_click = true;
-        timer = setInterval(change_time_left, 10);
+        
+        timer_changing_images = setInterval(change_time_left, 10);
 
     }
 }
@@ -134,7 +142,7 @@ function change_time_left() {
     var time_left_seconds = Number(time_text[12]);
     var time_left_hundredth = Number(time_text.substring(14, 16));
     if (time_left_seconds == 0 && time_left_hundredth == 0) {
-        clearInterval(timer);
+        clearInterval(timer_changing_images);
         game_over();
     }
     else {
@@ -157,21 +165,23 @@ function change_time_left() {
 }
 
 function add_click_events_offered_images() {
-    offeredImages.children[0].addEventListener("click", function() {
-        offered_image_clicked(0);
-    });
-    offeredImages.children[1].addEventListener("click", function() {
-        offered_image_clicked(1);
-    });
-    offeredImages.children[2].addEventListener("click", function() {
-        offered_image_clicked(2);
-    });
-    offeredImages.children[3].addEventListener("click", function() {
-        offered_image_clicked(3);
-    });
-    offeredImages.children[4].addEventListener("click", function() {
-        offered_image_clicked(4);
-    });
+    if (!event_listeners_added) {
+        offeredImages.children[0].addEventListener("click", function() {
+            offered_image_clicked(0);
+        });
+        offeredImages.children[1].addEventListener("click", function() {
+            offered_image_clicked(1);
+        });
+        offeredImages.children[2].addEventListener("click", function() {
+            offered_image_clicked(2);
+        });
+        offeredImages.children[3].addEventListener("click", function() {
+            offered_image_clicked(3);
+        });
+        offeredImages.children[4].addEventListener("click", function() {
+            offered_image_clicked(4);
+        });
+    }
 }
 
 
@@ -281,42 +291,114 @@ function change_offered_images() {
     }
 }
 
-var a;
+
 
 function game_over() {
+
     indicator_game_ended = true;
-    clearInterval(timer);
+    clearInterval(timer_changing_images);
     requiredImage.style.opacity = "50%";
     information.style.opacity = "50%";
     offeredImages.style.opacity = "50%";
     start.style.opacity = "50%";
     animation.style.display = "block";
+
     if (current_score == 45) {
         animation.style.backgroundImage = "url('pictures/winner.png')";
-        a = setInterval(move, 2);
+        timer_animation = setInterval(move, 2);
     }
-    else {
-        
+    else { 
         animation.style.backgroundImage = "url('pictures/loser.png')";
-        
-
-        a = setInterval(move, 2);
-        
+        timer_animation = setInterval(move, 2);
     }
-
-  
 }
 
-var pos = 800;
-
 function move() {
-   pos--;
-   if(pos == 350) {
-       clearInterval(a);
+   position_animation--;
+   if(position_animation == 350) {
+        clearInterval(timer_animation);
+
+        check_if_player_wants_to_play_again();
+
+        question.style.display = "block";
    }
    else {
-       animation.style.left = pos + "px";
+       animation.style.left = position_animation + "px";
    }
+}
+
+function check_if_player_wants_to_play_again() {
+    var textQuestion = document.createTextNode("Do you want to play again?");
+    var paragraphQuestion = document.createElement("p");
+    paragraphQuestion.appendChild(textQuestion);
+    paragraphQuestion.style.textAlign = "center";
+    paragraphQuestion.style.fontFamily = "lobster";
+    paragraphQuestion.style.color = "darkolivegreen";
+    paragraphQuestion.style.fontSize = "20px";
+    question.appendChild(paragraphQuestion);
+
+    var buttonYes = document.createElement("button");
+    buttonYes.id = "buttonYes";
+    buttonYes.textContent = "YES";
+    buttonYes.style.fontFamily = "lobster";
+    buttonYes.style.position = "relative";
+    buttonYes.style.left = "100px";
+    buttonYes.style.color = "darkolivegreen";
+    buttonYes.style.width = "100px";
+    buttonYes.style.backgroundColor = "papayawhip";
+    buttonYes.style.border = "2px solid gray";
+    buttonYes.addEventListener("mousemove", function() {
+        buttonYes.style.backgroundColor = "gray";
+    });
+    buttonYes.addEventListener("mouseout", function() {
+        buttonYes.style.backgroundColor = "papayawhip";
+    });
+    question.appendChild(buttonYes);  
+    buttonYes.addEventListener("click", play_again);   
+        
+    var buttonNo = document.createElement("button");
+    buttonNo.textContent = "NO";
+    buttonNo.style.fontFamily = "lobster";
+    buttonNo.style.position = "relative";
+    buttonNo.style.left = "200px";
+    buttonNo.style.width = "100px";
+    buttonNo.style.color = "darkolivegreen";
+    buttonNo.style.backgroundColor = "papayawhip";
+    buttonNo.style.border = "2px solid gray";
+    buttonNo.addEventListener("mousemove", function() {
+        buttonNo.style.backgroundColor = "gray";
+    });
+    buttonNo.addEventListener("mouseout", function() {
+        buttonNo.style.backgroundColor = "papayawhip";
+    });
+    question.appendChild(buttonNo);
+    buttonNo.addEventListener("click", end_game);
+}
+
+function play_again() {
+    indicator_game_ended = false;
+    indicator_start_click = false;
+    current_level = 1;
+    current_score = 0;
+    position_animation = 800;
+    animation.style.display = "none";
+    question.style.display = "none";
+    document.getElementById("p_time").textContent = "Time left: 03:00";
+    requiredImage.style.opacity = "100%";
+    information.style.opacity = "100%";
+    offeredImages.style.opacity = "100%";
+    start.style.opacity = "100%";
+    change_required_image();
+    change_offered_images();
+    startGame();
+    
+}
+
+function end_game() {
+    animation.style.backgroundImage = "url('pictures/sad.png')";
+    document.getElementById("p_time").textContent = "";
+    question.style.display = "none";
+
 }
 
 main();
