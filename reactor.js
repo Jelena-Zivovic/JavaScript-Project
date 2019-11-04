@@ -112,7 +112,7 @@ function main() {
 
     for (var i = 0; i < 5; i++) {
         images[i] = document.createElement("img");
-        images[i].className = "img_offeredImages";
+        images[i].id = "img_offeredImage" + String(i+1);
         var name = "pictures/level_1/" + String(indexes[i]) + ".png";
         images[i].src = name;
         images[i].width = 100;
