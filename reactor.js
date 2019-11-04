@@ -3,6 +3,7 @@
 var requiredImage;
 var offeredImages;
 var information;
+var animation;
 var start;
 var timer;
 
@@ -111,6 +112,8 @@ function main() {
         offeredImages.appendChild(images[i]);
     }
 
+    animation = document.getElementById("animation");
+    
     start = document.getElementById("start");
     start.style.cursor = "grab";
 
@@ -278,21 +281,42 @@ function change_offered_images() {
     }
 }
 
+var a;
+
 function game_over() {
     indicator_game_ended = true;
     clearInterval(timer);
+    requiredImage.style.opacity = "50%";
+    information.style.opacity = "50%";
+    offeredImages.style.opacity = "50%";
+    start.style.opacity = "50%";
+    animation.style.display = "block";
     if (current_score == 45) {
-        
-        console.log("winner");
-
+        animation.style.backgroundImage = "url('pictures/winner.png')";
+        a = setInterval(move, 2);
     }
     else {
-        console.log("loser");
-        document.getElementsByTagName("body")[0].style.opacity = "50%";
+        
+        animation.style.backgroundImage = "url('pictures/loser.png')";
+        
+
+        a = setInterval(move, 2);
         
     }
 
   
+}
+
+var pos = 800;
+
+function move() {
+   pos--;
+   if(pos == 350) {
+       clearInterval(a);
+   }
+   else {
+       animation.style.left = pos + "px";
+   }
 }
 
 main();

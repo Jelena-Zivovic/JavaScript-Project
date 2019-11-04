@@ -94,3 +94,14 @@ body {
 }
 
 
+#animation {
+    display: none;
+    width: 300px;
+    height: 300px;
+    position: relative;
+    top: -450px;
+    left: 800px;
+    border: 1px solid rgb(197, 78, 78);
+    border-radius: 50px;
+    overflow: hidden;
+}
