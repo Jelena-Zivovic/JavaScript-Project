@@ -14,6 +14,8 @@ var indicator_game_ended = false;
 var current_level = 1;
 var current_score = 0;
 
+var number_of_images = 20;
+
 //initialize game
 function main() {
 
@@ -65,7 +67,7 @@ function main() {
     //set required image
     requiredImage = document.getElementById("requiredImage");
 
-    var random_number = Math.ceil(Math.random()*15);
+    var random_number = Math.ceil(Math.random()*number_of_images);
     var name_of_current_image = String(random_number) + ".png";
 
     var image = document.createElement("img");
@@ -215,7 +217,7 @@ function get_different_random_numbers(required_number) {
     var numbers = [required_number];
 
     while (numbers.length != 5) {
-        var random_number = Math.ceil(Math.random()*15);
+        var random_number = Math.ceil(Math.random()*number_of_images);
 
         if (!numbers.includes(random_number)) {
             numbers.push(random_number);
@@ -244,7 +246,7 @@ function change_required_image() {
     var last_index_slash = old_src.lastIndexOf("/");
     var level_index_slash = old_src.substring(0, last_index_slash).lastIndexOf("/");
 
-    var random_number = Math.ceil(Math.random()*15);
+    var random_number = Math.ceil(Math.random()*number_of_images);
 
     var new_src = old_src.substring(0, level_index_slash) + "/level_" + String(current_level) + "/" + String(random_number) + ".png";
 
@@ -282,6 +284,7 @@ function game_over() {
     if (current_score == 45) {
         
         console.log("winner");
+
     }
     else {
         console.log("loser");
