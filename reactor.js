@@ -6,6 +6,7 @@ var information;
 var animation;
 var question;
 var start;
+
 var timer_changing_images;
 var timer_animation;
 
@@ -14,12 +15,18 @@ var indicator_start_click = false;
 
 var indicator_game_ended = false;
 
-var event_listeners_added = false;
+//indicator that shows if event listeners are added on required and offered images
+var indicator_event_listeners_added = false;
 
 var current_level = 1;
 var current_score = 0;
 
+var time_left_level_1 = "Time left: 02:50";
+var time_left_level_2 = "Time left: 02:20";
+var time_left_level_3 = "Time left: 02:00";
+
 var number_of_images = 30;
+//starting position of animation at the end of the game
 var position_animation = 800;
 
 //initialize game
@@ -45,7 +52,7 @@ function main() {
     //set starting time
     var paragraphTime = document.createElement("p");
     paragraphTime.id = "p_time";
-    var textTime = document.createTextNode("Time left: 02:50");
+    var textTime = document.createTextNode(time_left_level_1);
     paragraphTime.appendChild(textTime);
     paragraphTime.style.fontFamily = "lobster";
     paragraphTime.style.color = "darkolivegreen";
@@ -59,7 +66,7 @@ function main() {
     //set starting score 
     var paragraphScore = document.createElement("p");
     paragraphScore.id = "p_score";
-    var textScore = document.createTextNode("Score: " + String(current_score));
+    var textScore = document.createTextNode("Score: 0");
     paragraphScore.appendChild(textScore);
     paragraphScore.style.fontFamily = "lobster";
     paragraphScore.style.color = "darkolivegreen";
@@ -86,6 +93,7 @@ function main() {
     image.style.position = "relative";
     image.style.top = "25px";
     image.style.left = "400px";
+    image.style.borderRadius = "20px";
 
     //set offered images
 
@@ -93,6 +101,7 @@ function main() {
 
     var images = [];
 
+    //one of the offered images must be required image
     var last_index_slash = requiredImage.children[0].src.lastIndexOf("/");
     var last_index_dot = requiredImage.children[0].src.lastIndexOf(".");
     var number = Number(requiredImage.children[0].src.substring(last_index_slash+1, last_index_dot));
@@ -103,41 +112,42 @@ function main() {
 
     for (var i = 0; i < 5; i++) {
         images[i] = document.createElement("img");
-        images[i].id = "img_offeredImage" + String(i+1);
+        images[i].className = "img_offeredImages";
         var name = "pictures/level_1/" + String(indexes[i]) + ".png";
         images[i].src = name;
         images[i].width = 100;
         images[i].height = 100;
         images[i].style.position = "relative";
         images[i].style.top = "25px";
-    }
-
-    for (var i = 0; i < 5; i++) {
-        images[i].style.left = String((i+3) * 50) + "px";
+        images[i].style.left = String((i+3)*50) + "px";
+        images[i].style.borderRadius = "20px";
         offeredImages.appendChild(images[i]);
     }
 
     animation = document.getElementById("animation");
+
     question = document.getElementById("question");
     
     start = document.getElementById("start");
-    start.style.cursor = "grab";
+    start.style.cursor = "pointer";
 
-    start.addEventListener("click", startGame);
-    
+    //when start is clicked, game starts
+    start.addEventListener("click", startGame);   
 }
 function startGame() {
+
     if (!indicator_start_click) {
         add_click_events_offered_images();
-        event_listeners_added = true;
+
+        indicator_event_listeners_added = true;
         indicator_start_click = true;
         
         timer_changing_images = setInterval(change_time_left, 10);
-
     }
 }
 
 function change_time_left() {
+
     var time_text = document.getElementById("p_time").textContent;
     var time_left_seconds = Number(time_text[12]);
     var time_left_hundredth = Number(time_text.substring(14, 16));
@@ -159,13 +169,13 @@ function change_time_left() {
            else {
                 document.getElementById("p_time").textContent = "Time left: 0" + String(time_left_seconds) + ":" + String(time_left_hundredth);
            }
-       }
-    
+       }    
     }
 }
 
 function add_click_events_offered_images() {
-    if (!event_listeners_added) {
+
+    if (!indicator_event_listeners_added) {
         offeredImages.children[0].addEventListener("click", function() {
             offered_image_clicked(0);
         });
@@ -184,16 +194,14 @@ function add_click_events_offered_images() {
     }
 }
 
-
-
 function offered_image_clicked(image_number) {
+
     if (!indicator_game_ended) {
         if (requiredImage.children[0].src == offeredImages.children[image_number].src) {
             current_score += 1;
             if (current_score == 15) {
                 current_level = 2;
-                document.getElementById("p_level").innerHTML = "Level: " + String(current_level);
-                
+                document.getElementById("p_level").textContent = "Level: 2";    
             }
             else if (current_score == 30) {
                 current_level = 3;
@@ -207,19 +215,17 @@ function offered_image_clicked(image_number) {
             change_offered_images();
 
             if (current_level == 1) {
-                document.getElementById("p_time").textContent = "Time left: 02:50";
+                document.getElementById("p_time").textContent = time_left_level_1;
             }
             else if (current_level == 2) {
-                document.getElementById("p_time").textContent = "Time left: 02:30";
+                document.getElementById("p_time").textContent = time_left_level_2;
             }
             else if (current_level == 3) {
-                document.getElementById("p_time").textContent = "Time left: 02:00";
+                document.getElementById("p_time").textContent = time_left_level_3;
             }
-            
-
-        
         }
         else {
+            //wrong image is clicked
             game_over();
         }
     }
@@ -227,6 +233,7 @@ function offered_image_clicked(image_number) {
 
 //this function returns array of 5 different numbers including required_number
 function get_different_random_numbers(required_number) {
+
     var numbers = [required_number];
 
     while (numbers.length != 5) {
@@ -236,7 +243,6 @@ function get_different_random_numbers(required_number) {
             numbers.push(random_number);
         }
     }
-
     return numbers;
 }
 
@@ -274,7 +280,6 @@ function change_offered_images() {
     var last_index_dot = requiredImage.children[0].src.lastIndexOf(".");
     var number = Number(requiredImage.children[0].src.substring(last_index_slash+1, last_index_dot));
 
-
     var indexes = get_different_random_numbers(number);
 
     shuffle(indexes);
@@ -283,7 +288,6 @@ function change_offered_images() {
         var old_src = offeredImages.children[i].src;
         var last_index_slash = old_src.lastIndexOf("/");
         var level_index_slash = old_src.substring(0, last_index_slash).lastIndexOf("/");
-
 
         var new_src = old_src.substring(0, level_index_slash) + "/level_" + String(current_level) + "/" + String(indexes[i]) + ".png";
 
@@ -296,11 +300,14 @@ function change_offered_images() {
 function game_over() {
 
     indicator_game_ended = true;
+
     clearInterval(timer_changing_images);
+
     requiredImage.style.opacity = "50%";
     information.style.opacity = "50%";
     offeredImages.style.opacity = "50%";
     start.style.opacity = "50%";
+
     animation.style.display = "block";
 
     if (current_score == 45) {
@@ -328,6 +335,7 @@ function move() {
 }
 
 function check_if_player_wants_to_play_again() {
+
     var textQuestion = document.createTextNode("Do you want to play again?");
     var paragraphQuestion = document.createElement("p");
     paragraphQuestion.appendChild(textQuestion);
@@ -337,6 +345,7 @@ function check_if_player_wants_to_play_again() {
     paragraphQuestion.style.fontSize = "20px";
     question.appendChild(paragraphQuestion);
 
+    //creating "yes" button
     var buttonYes = document.createElement("button");
     buttonYes.id = "buttonYes";
     buttonYes.textContent = "YES";
@@ -353,9 +362,10 @@ function check_if_player_wants_to_play_again() {
     buttonYes.addEventListener("mouseout", function() {
         buttonYes.style.backgroundColor = "papayawhip";
     });
-    question.appendChild(buttonYes);  
-    buttonYes.addEventListener("click", play_again);   
+    buttonYes.addEventListener("click", play_again);
+    question.appendChild(buttonYes);     
         
+    //creating "no" button
     var buttonNo = document.createElement("button");
     buttonNo.textContent = "NO";
     buttonNo.style.fontFamily = "lobster";
@@ -371,8 +381,8 @@ function check_if_player_wants_to_play_again() {
     buttonNo.addEventListener("mouseout", function() {
         buttonNo.style.backgroundColor = "papayawhip";
     });
-    question.appendChild(buttonNo);
     buttonNo.addEventListener("click", end_game);
+    question.appendChild(buttonNo);  
 }
 
 function play_again() {
@@ -383,22 +393,20 @@ function play_again() {
     position_animation = 800;
     animation.style.display = "none";
     question.style.display = "none";
-    document.getElementById("p_time").textContent = "Time left: 02:50";
+    document.getElementById("p_time").textContent = time_left_level_1;
     requiredImage.style.opacity = "100%";
     information.style.opacity = "100%";
     offeredImages.style.opacity = "100%";
     start.style.opacity = "100%";
     change_required_image();
     change_offered_images();
-    startGame();
-    
+    startGame();   
 }
 
 function end_game() {
     animation.style.backgroundImage = "url('pictures/sad.png')";
     document.getElementById("p_time").textContent = "";
     question.style.display = "none";
-
 }
 
 main();

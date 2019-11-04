@@ -11,7 +11,6 @@ body {
 
 }
 
-
 #start {
     color:darkolivegreen;
     text-align: center;
@@ -23,7 +22,6 @@ body {
 
 #start:hover {
     background-color: palegoldenrod;;
-
 }
 
 #start:active {
@@ -74,25 +72,11 @@ body {
 #offeredImages {
     width: 1000px;
     height: 150px;
-
 }
 
-#img_offeredImage1:hover {
+.img_offeredImages:hover {
     cursor: pointer;
 }
-#img_offeredImage2:hover {
-    cursor: pointer;
-}
-#img_offeredImage3:hover {
-    cursor: pointer;
-}
-#img_offeredImage4:hover {
-    cursor: pointer;
-}
-#img_offeredImage5:hover {
-    cursor: pointer;
-}
-
 
 #animation {
     display: none;
@@ -101,7 +85,7 @@ body {
     position: relative;
     top: -450px;
     left: 800px;
-    border: 1px solid rgb(197, 78, 78);
+    border: 1px solid black;
     border-radius: 50px;
     overflow: hidden;
 }
