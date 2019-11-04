@@ -19,7 +19,7 @@ var event_listeners_added = false;
 var current_level = 1;
 var current_score = 0;
 
-var number_of_images = 20;
+var number_of_images = 30;
 var position_animation = 800;
 
 //initialize game
@@ -45,7 +45,7 @@ function main() {
     //set starting time
     var paragraphTime = document.createElement("p");
     paragraphTime.id = "p_time";
-    var textTime = document.createTextNode("Time left: 03:00");
+    var textTime = document.createTextNode("Time left: 02:50");
     paragraphTime.appendChild(textTime);
     paragraphTime.style.fontFamily = "lobster";
     paragraphTime.style.color = "darkolivegreen";
@@ -207,13 +207,13 @@ function offered_image_clicked(image_number) {
             change_offered_images();
 
             if (current_level == 1) {
-                document.getElementById("p_time").textContent = "Time left: 03:00";
+                document.getElementById("p_time").textContent = "Time left: 02:50";
             }
             else if (current_level == 2) {
-                document.getElementById("p_time").textContent = "Time left: 02:70";
+                document.getElementById("p_time").textContent = "Time left: 02:30";
             }
             else if (current_level == 3) {
-                document.getElementById("p_time").textContent = "Time left: 02:40";
+                document.getElementById("p_time").textContent = "Time left: 02:00";
             }
             
 
@@ -317,7 +317,7 @@ function move() {
    position_animation--;
    if(position_animation == 350) {
         clearInterval(timer_animation);
-
+        document.getElementById("p_time").textContent = "";
         check_if_player_wants_to_play_again();
 
         question.style.display = "block";
@@ -383,7 +383,7 @@ function play_again() {
     position_animation = 800;
     animation.style.display = "none";
     question.style.display = "none";
-    document.getElementById("p_time").textContent = "Time left: 03:00";
+    document.getElementById("p_time").textContent = "Time left: 02:50";
     requiredImage.style.opacity = "100%";
     information.style.opacity = "100%";
     offeredImages.style.opacity = "100%";
