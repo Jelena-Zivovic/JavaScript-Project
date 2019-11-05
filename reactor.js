@@ -390,6 +390,8 @@ function play_again() {
     indicator_start_click = false;
     current_level = 1;
     current_score = 0;
+    document.getElementById("p_level").textContent = "Level: 1";
+    document.getElementById("p_score").textContent = "Score: 0";
     position_animation = 800;
     animation.style.display = "none";
     question.style.display = "none";
