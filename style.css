@@ -169,7 +169,7 @@ body {
     overflow: hidden;
 }
 
-#question {
+#questionWrapper {
     display: none;
     width: 500px;
     height: 100px;
@@ -180,4 +180,32 @@ body {
     overflow: hidden;
     border: 0.2px solid papayawhip;
     border-radius: 50px;
+}
+
+#question {
+    font-family: "lobster";
+    text-align: center;
+    color: darkolivegreen;
+    font-size: 20px;
+}
+
+.buttons {
+    font-family: "lobster";
+    position: relative;
+    width: 100px;
+    color: darkolivegreen;
+    background-color: papayawhip;
+    border: 2px solid gray;
+}
+
+#buttonYes {
+    left: 100px;
+}
+
+#buttonNo {
+    left: 200px;
+}
+
+.buttons:hover {
+    background-color: gray;
 }

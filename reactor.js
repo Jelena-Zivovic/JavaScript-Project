@@ -77,11 +77,16 @@ class OfferedImages {
         this._images = [];
         for (let i = 0; i < 5; i++) {
             this._images[i] = new Image("", "");
+            this._indicatorEventListenersAdded = false;
         }
     }
 
     get images() {
         return this._images;
+    }
+
+    get indicatorEventListenersAdded() {
+        return this._indicatorEventListenersAdded;
     }
 
     getDifferentRandomNumbers(required_number) {
@@ -149,6 +154,7 @@ class OfferedImages {
                 offeredImageClicked(i);
             });
         }
+        this._indicatorEventListenersAdded = true;
     }
 
     
@@ -242,8 +248,13 @@ var information;
 var requiredImage;
 var offeredImages;
 
+var animation = document.getElementById("animation");
+var animationPosition = 800;
+var timerAnimation;
+
 var indicatorGameStarted = false;
 var indicatorGameEnded = false;
+
 var timerChangingImages;
 
 function main() {
@@ -264,7 +275,8 @@ function main() {
 
 function startGame() {
     if (!indicatorGameStarted) {
-        offeredImages.addEventListeners();        
+        if (!offeredImages.indicatorEventListenersAdded)
+            offeredImages.addEventListeners();        
         indicatorGameStarted = true;
         timerChangingImages = setInterval(changeTime, 10);
     }
@@ -304,7 +316,6 @@ function offeredImageClicked(imageNumber) {
         let clickedImageSrc = offeredImages.images[imageNumber].imageSrc;
 
         if (requiredImageSrc === clickedImageSrc) {
-            console.log("that's roght");
             information.increaseScore();
             requiredImage.changeImage(information.level);
             offeredImages.changeImages(information.level, requiredImage.getImageNumber());
@@ -316,8 +327,72 @@ function offeredImageClicked(imageNumber) {
 }
 
 function gameOver() {
-    console.log("game over");
+
     indicatorGameEnded = true;
+
+    document.getElementById("start").style.opacity = "50%";
+    document.getElementById("informationWrapper").style.opacity = "50%";
+    document.getElementById("requiredImageWrapper").style.opacity = "50%";
+    document.getElementById("offeredImagesWrapper").style.opacity = "50%";
+
+    clearInterval(timerChangingImages);
+
+    animation.style.display = "block";
+    
+
+    if (information.score == 45) {
+        animation.style.backgroundImage = "url('pictures/winner.png')";
+        timerAnimation = setInterval(move, 2);
+    }
+    else {
+        animation.style.backgroundImage = "url('pictures/loser.png')";
+        timerAnimation = setInterval(move, 2);
+    }
+}
+
+function move() {
+    animationPosition--;
+    if (animationPosition == 350) {
+        clearInterval(timerAnimation);
+        information.time = "";
+        checkIfPlayerWantsToPlayAgain();
+    }
+    else {
+        animation.style.left = animationPosition + "px";
+    }
+}
+
+function checkIfPlayerWantsToPlayAgain() {
+    document.getElementById("questionWrapper").style.display = "block";
+
+    document.getElementById("buttonYes").addEventListener("click", playAgain);
+    document.getElementById("buttonNo").addEventListener("click", endGame);
+
+}
+
+function playAgain() {
+    indicatorGameEnded = false;
+    indicatorGameStarted = false;
+    information.level = 1;
+    information.score = 0;
+    information.time = "Time left: 02:50";
+    animationPosition = 800;
+    animation.style.display = "none";
+    document.getElementById("questionWrapper").style.display = "none";
+    document.getElementById("start").style.opacity = "100%";
+    document.getElementById("informationWrapper").style.opacity = "100%";
+    document.getElementById("requiredImageWrapper").style.opacity = "100%";
+    document.getElementById("offeredImagesWrapper").style.opacity = "100%";
+
+    requiredImage.changeImage(information.level);
+    offeredImages.changeImages(information.level, requiredImage.getImageNumber());
+    startGame();
+}
+
+function endGame() {
+    animation.style.backgroundImage = "url('pictures/sad.png')";
+    information.time = "";
+    document.getElementById("questionWrapper").style.display = "none";
 }
 
 main();
