@@ -298,6 +298,10 @@ function offeredImageClicked(imageNumber) {
 
         if (requiredImageSrc === clickedImageSrc) {
             information.increaseScore();
+            if (information.score == 45) {
+                gameOver();
+                return;
+            }
             requiredImage.changeImage(information.level);
             offeredImages.changeImages(information.level, requiredImage.getImageNumber());
         }
@@ -320,7 +324,7 @@ function gameOver() {
 
     animation.style.display = "block"; 
 
-    if (information.score == 45) {
+    if (information.score == 45) { 
         animation.style.backgroundImage = "url('pictures/winner.png')";
         timerAnimation = setInterval(move, 2);
     }
@@ -345,33 +349,29 @@ function move() {
 function checkIfPlayerWantsToPlayAgain() {
     document.getElementById("questionWrapper").style.display = "block";
 
-    document.getElementById("buttonYes").addEventListener("click", playAgain);
-    document.getElementById("buttonNo").addEventListener("click", endGame);
-}
+    document.getElementById("buttonYes").addEventListener("click", function playAgain() {
+        indicatorGameEnded = false;
+        indicatorGameStarted = false;
+        information.level = 1;
+        information.score = 0;
+        information.time = information.timeLeftLevel1;
+        animationPosition = 800;
+        animation.style.display = "none";
+        document.getElementById("questionWrapper").style.display = "none";
+        document.getElementById("start").style.opacity = "100%";
+        document.getElementById("informationWrapper").style.opacity = "100%";
+        document.getElementById("requiredImageWrapper").style.opacity = "100%";
+        document.getElementById("offeredImagesWrapper").style.opacity = "100%";
 
-function playAgain() {
-    indicatorGameEnded = false;
-    indicatorGameStarted = false;
-    information.level = 1;
-    information.score = 0;
-    information.time = information.timeLeftLevel1;
-    animationPosition = 800;
-    animation.style.display = "none";
-    document.getElementById("questionWrapper").style.display = "none";
-    document.getElementById("start").style.opacity = "100%";
-    document.getElementById("informationWrapper").style.opacity = "100%";
-    document.getElementById("requiredImageWrapper").style.opacity = "100%";
-    document.getElementById("offeredImagesWrapper").style.opacity = "100%";
-
-    requiredImage.changeImage(information.level);
-    offeredImages.changeImages(information.level, requiredImage.getImageNumber());
-    startGame();
-}
-
-function endGame() {
-    animation.style.backgroundImage = "url('pictures/sad.png')";
-    information.time = "";
-    document.getElementById("questionWrapper").style.display = "none";
+        requiredImage.changeImage(information.level);
+        offeredImages.changeImages(information.level, requiredImage.getImageNumber());
+        startGame();
+    });
+    document.getElementById("buttonNo").addEventListener("click", function endGame() {
+        animation.style.backgroundImage = "url('pictures/sad.png')";
+        information.time = "";
+        document.getElementById("questionWrapper").style.display = "none";
+    });
 }
 
 main();
