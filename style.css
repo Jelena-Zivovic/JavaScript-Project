@@ -35,7 +35,7 @@ body {
     height: 100px;
 }
 
-#levelWrapper {
+.informationDivs {
     display: inline-block;
     position: relative;
     left: 50px;
@@ -44,45 +44,23 @@ body {
     margin: 0;
 }
 
-#timeWrapper {
-    display: inline-block;
-    position: relative;
-    left: 50px;
-    width: 300px;
-    height: 100px;
-    margin: 0;
-}
-
-#scoreWrapper {
-    display: inline-block;
-    position: relative;
-    left: 50px;
-    width: 300px;
-    height: 100px;
-    margin: 0;
+.informationParagraphs {
+    font-family: "lobster";
+    color: darkolivegreen;
+    font-size: 40px;
+    overflow: hidden;
 }
 
 #level {
-    font-family: "lobster";
-    color: darkolivegreen;
     text-align: left;
-    font-size: 40px;
-    overflow: hidden;
 }
+
 #time {
-    font-family: "lobster";
-    color: darkolivegreen;
     text-align: center;
-    font-size: 40px;
-    overflow: hidden;
 }
 
 #score {
-    font-family: "lobster";
-    color: darkolivegreen;
     text-align: right;
-    font-size: 40px;
-    overflow: hidden;
 }
 
 #requiredImageWrapper {
@@ -107,54 +85,33 @@ body {
     height: 150px;
 }
 
-#img_offeredImage1 {
+.offeredImages {
     width: 100px;
     height: 100px;
     position: relative; 
     top: 25px;
-    left: 150px;
     border-radius: 20px;
     cursor: pointer;
+}
+
+#img_offeredImage1 {
+    left: 150px;
 }
 
 #img_offeredImage2 {
-    width: 100px;
-    height: 100px;
-    position: relative; 
-    top: 25px;
     left: 200px;
-    border-radius: 20px;
-    cursor: pointer;
 }
 
 #img_offeredImage3 {
-    width: 100px;
-    height: 100px;
-    position: relative; 
-    top: 25px;
     left: 250px;
-    border-radius: 20px;
-    cursor: pointer;
 }
 
 #img_offeredImage4 {
-    width: 100px;
-    height: 100px;
-    position: relative; 
-    top: 25px;
     left: 300px;
-    border-radius: 20px;
-    cursor: pointer;
 }
 
 #img_offeredImage5 {
-    width: 100px;
-    height: 100px;
-    position: relative; 
-    top: 25px;
     left: 350px;
-    border-radius: 20px;
-    cursor: pointer;
 } 
 
 #animation {
