@@ -66,13 +66,10 @@ class RequiredImage {
         let lastIndexDot = oldSrc.lastIndexOf(".");
         var imageNumber = Number(oldSrc.substring(lastIndexSlash+1, lastIndexDot));
         return imageNumber;
-    }
-    
-
+    }   
 }
 
 class OfferedImages {
-
     constructor() {
         this._images = [];
         for (let i = 0; i < 5; i++) {
@@ -123,13 +120,10 @@ class OfferedImages {
         for (let i = 0; i < 5; i++) {
             let currentImageSrc = "pictures/level_1/" + indexes[i] + ".png";
             this.images[i].imageId = "img_offeredImage" + String(i+1);
-            this.images[i].imageSrc = currentImageSrc;
-            
-            
+            this.images[i].imageSrc = currentImageSrc;    
         }
 
         document.getElementById("offeredImagesWrapper").style.display = "block";
-
     }
 
     changeImages(currentLevel, requiredImageNumber) {
@@ -144,7 +138,6 @@ class OfferedImages {
             let newSrc = oldSrc.substring(0, levelIndexSlash) + "/level_" + currentLevel + "/" + indexes[i] + ".png";
 
             this.images[i].imageSrc = newSrc;
-
         }
     }
 
@@ -155,13 +148,10 @@ class OfferedImages {
             });
         }
         this._indicatorEventListenersAdded = true;
-    }
-
-    
+    } 
 }
 
 class Information {
-
     constructor() {
         this._timeLeftLevel1 = "Time left: 02:50";
         this._timeLeftLevel2 = "Time left: 02:30";
@@ -193,8 +183,7 @@ class Information {
     }
 
     get time() {
-        return this._time;
-        
+        return this._time;    
     }
 
     set time(currentTime) {
@@ -219,12 +208,6 @@ class Information {
         document.getElementById("informationWrapper").style.display = "block";
     }
 
-    changeInformation(currentLevel, currentTime, currentScore) {
-        this.level = "Level: " + currentLevel;
-        this.time = currentTime;
-        this.score = "Score: " + currentScore;
-    }
-
     increaseScore() {
         this.score = this.score + 1;
         
@@ -238,9 +221,7 @@ class Information {
         else if (this.score >= 30) {
             this.level = 3;
             this.time = this.timeLeftLevel3;
-        }
-        
-
+        }   
     }
 }
 
@@ -337,8 +318,7 @@ function gameOver() {
 
     clearInterval(timerChangingImages);
 
-    animation.style.display = "block";
-    
+    animation.style.display = "block"; 
 
     if (information.score == 45) {
         animation.style.backgroundImage = "url('pictures/winner.png')";
@@ -367,7 +347,6 @@ function checkIfPlayerWantsToPlayAgain() {
 
     document.getElementById("buttonYes").addEventListener("click", playAgain);
     document.getElementById("buttonNo").addEventListener("click", endGame);
-
 }
 
 function playAgain() {
@@ -375,7 +354,7 @@ function playAgain() {
     indicatorGameStarted = false;
     information.level = 1;
     information.score = 0;
-    information.time = "Time left: 02:50";
+    information.time = information.timeLeftLevel1;
     animationPosition = 800;
     animation.style.display = "none";
     document.getElementById("questionWrapper").style.display = "none";
