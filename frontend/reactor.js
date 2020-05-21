@@ -240,6 +240,8 @@ var timerChangingImages;
 
 function main() {
 
+    
+
     information = new Information();
     information.setInformation();
 
@@ -255,6 +257,9 @@ function main() {
 }
 
 function startGame() {
+
+    deletePlayer('nikola');
+
     if (!indicatorGameStarted) {
         if (!offeredImages.indicatorEventListenersAdded)
             offeredImages.addEventListeners();        
@@ -372,6 +377,52 @@ function checkIfPlayerWantsToPlayAgain() {
         information.time = "";
         document.getElementById("questionWrapper").style.display = "none";
     });
+}
+
+function getScoreForAllUsers() {
+    let xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange=function() {
+      if (this.readyState == 4 && this.status == 200) {
+          return JSON.parse(this.responseText);
+      }
+    };
+    xhttp.open("GET", 'http://localhost:8888/api/players', true);
+    xhttp.send();
+}
+
+function addNewPlayer(username) {
+    let xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange=function() {
+      if (this.readyState == 4 && this.status == 200) {
+          console.log(this.responseText);
+      }
+    };
+    xhttp.open("POST", 'http://localhost:8888/api/players/' + username, true);
+    xhttp.send();
+}
+
+function updateScore(username, score) {
+    let xhttp = new XMLHttpRequest();
+    
+    xhttp.onreadystatechange=function() {
+      if (this.readyState == 4 && this.status == 200) {
+          console.log(this.responseText);
+      }
+    };
+    xhttp.open("PUT", 'http://localhost:8888/api/players/' + username + '/' + score, true);
+    xhttp.send();
+}
+
+function deletePlayer(username) {
+    let xhttp = new XMLHttpRequest();
+    
+    xhttp.onreadystatechange=function() {
+      if (this.readyState == 4 && this.status == 200) {
+          console.log(this.responseText);
+      }
+    };
+    xhttp.open("DELETE", 'http://localhost:8888/api/players/' + username , true);
+    xhttp.send();
 }
 
 main();

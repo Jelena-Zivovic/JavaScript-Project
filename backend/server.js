@@ -1,11 +1,18 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
+const cors = require('cors');
 
 const players = require('./players.json');
 
+let corsOptions = {
+    origin: '*',
+    optionsSuccessStatus: 200
+};
+
 const app = express();
 app.use(bodyParser.json());
+app.use(cors(corsOptions));
 
 function findPlayer(username) {
     return players.find(player => {
@@ -13,13 +20,13 @@ function findPlayer(username) {
     });
 }
 
-function addPlayer(username, score) {
+function addPlayer(username) {
     if (players.find(player => {
         return player.username === username
     }) === undefined) {
         players.push({
             username: username,
-            score: score
+            score: 0
         });
         fs.writeFile('players.json', JSON.stringify(players), () => {});
     }
@@ -39,7 +46,7 @@ function deleteUser(username) {
     let player = findPlayer(username);
     if (player !== undefined) {
         let index = players.indexOf(player);
-        players = players.splice(index, 1);
+        players.splice(index, 1);
         fs.writeFile('players.json', JSON.stringify(players), () => {});
     }
 }
@@ -48,22 +55,18 @@ app.route('/api/players').get((request, response) => {
     response.send(players);
 });
 
-app.route('/api/players/:username').get((request, response) => {
-    response.send(findPlayer(request.params['username']));
-});
-
 app.route('/api/players/:username').post((request, response) => {
-    addPlayer(request.params['username'], request.body);
+    addPlayer(request.params['username']);
     response.status(200);
 });
 
-app.route('/api/players/:username').put((request, response) => {
-    changeScore(request.params['username'], request.body);
+app.route('/api/players/:username/:score').put((request, response) => {
+    changeScore(request.params['username'], Number(request.params['score']));
     response.status(200);
 });
 
 app.route('/api/players/:username').delete((request, response) => {
-    deleteUser(username);
+    deleteUser(request.params['username']);
     response.status(200);
 });
 
