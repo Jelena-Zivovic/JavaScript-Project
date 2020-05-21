@@ -1,5 +1,6 @@
 'use strict';
 
+
 class Image {
     constructor(imageId, imageSrc) {
         this._imageId = imageId;
@@ -240,8 +241,8 @@ var timerChangingImages;
 
 function main() {
 
+    displayHeader();
     
-
     information = new Information();
     information.setInformation();
 
@@ -252,13 +253,86 @@ function main() {
     offeredImages = new OfferedImages();
     offeredImages.setImages(requiredImage.getImageNumber());
 
-    document.getElementById("start").addEventListener("click", startGame);
+    document.getElementById("start").addEventListener("click",() => {
+        if (isSomeoneLoggedIn()) {
+            startGame();
+        }
+    });
+
+    document.getElementById('register').addEventListener('click', () => {
+        document.getElementById('inputUsername').style.display = 'block';
+        document.getElementById('buttonRegister').style.display = 'inline';
+        document.getElementById('buttonSignIn').style.display = 'none';
+    });
+
+    document.getElementById('signIn').addEventListener('click', () => {
+        document.getElementById('inputUsername').style.display = 'block';
+        document.getElementById('buttonSignIn').style.display = 'inline';
+        document.getElementById('buttonRegister').style.display = 'none';
+    });
+
+    document.getElementById('buttonRegister').addEventListener('click', () => {
+
+        let username = document.getElementById('inputUsername').value;
+
+        isUserRegistered(username, function(something) {
+            console.log(something);
+            if (!something) {
+                registerPlayer(username);
+            }
+            else {
+                console.log('user is already registered!');
+            }
+        });
+
+       
+        
+    });
+
+    document.getElementById('buttonSignIn').addEventListener('click', () => {
+
+        let username = document.getElementById('inputUsername').value;
+
+        isUserRegistered(username, function(something) {
+            
+            if (something) {
+                signIn(username);
+            }
+            else {
+                console.log('user is not registered!');
+            }
+        });
+
+       
+        
+    });
+
+    document.getElementById('logout').addEventListener('click', () => {
+        localStorage.clear();
+        displayHeader();
+    });
+    
     
 }
 
-function startGame() {
+function displayHeader() {
+    document.getElementById('start').style.opacity = isSomeoneLoggedIn() ? '100%' : '50%';
+    document.getElementById('registerSignIn').style.display = isSomeoneLoggedIn() ? 'none' : 'block';
+    document.getElementById('playerInfo').style.display = isSomeoneLoggedIn() ? 'inline' : 'none';
+    document.getElementById('buttonRegister').style.display = 'none';
+    document.getElementById('buttonSignIn').style.display = 'none';
+    document.getElementById('inputUsername').style.display = 'none';
 
-    deletePlayer('nikola');
+}
+
+function isSomeoneLoggedIn() {
+    if (localStorage.length === 0) {
+        return false;
+    }
+    return true;
+}
+
+function startGame() {
 
     if (!indicatorGameStarted) {
         if (!offeredImages.indicatorEventListenersAdded)
@@ -317,6 +391,9 @@ function offeredImageClicked(imageNumber) {
 }
 
 function gameOver() {
+
+    updateScore(localStorage.getItem('username'), information.score);
+    
 
     indicatorGameEnded = true;
 
@@ -379,38 +456,18 @@ function checkIfPlayerWantsToPlayAgain() {
     });
 }
 
-function getScoreForAllUsers() {
-    let xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange=function() {
-      if (this.readyState == 4 && this.status == 200) {
-          return JSON.parse(this.responseText);
-      }
-    };
-    xhttp.open("GET", 'http://localhost:8888/api/players', true);
-    xhttp.send();
-}
 
-function addNewPlayer(username) {
-    let xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange=function() {
-      if (this.readyState == 4 && this.status == 200) {
-          console.log(this.responseText);
-      }
-    };
-    xhttp.open("POST", 'http://localhost:8888/api/players/' + username, true);
-    xhttp.send();
-}
 
 function updateScore(username, score) {
     let xhttp = new XMLHttpRequest();
     
     xhttp.onreadystatechange=function() {
       if (this.readyState == 4 && this.status == 200) {
-          console.log(this.responseText);
       }
     };
-    xhttp.open("PUT", 'http://localhost:8888/api/players/' + username + '/' + score, true);
+    xhttp.open("PUT", 'http://localhost:3000/api/players/' + username + '/' + score, true);
     xhttp.send();
+
 }
 
 function deletePlayer(username) {
@@ -418,11 +475,115 @@ function deletePlayer(username) {
     
     xhttp.onreadystatechange=function() {
       if (this.readyState == 4 && this.status == 200) {
-          console.log(this.responseText);
       }
     };
-    xhttp.open("DELETE", 'http://localhost:8888/api/players/' + username , true);
+    xhttp.open("DELETE", 'http://localhost:3000/api/players/' + username , true);
     xhttp.send();
+}
+
+
+function isUserRegistered(username, fn) {
+    let xhttp = new XMLHttpRequest();
+    var retFromServer = null;
+    xhttp.onreadystatechange=function() {
+      if (this.readyState === 4 && this.status == 200) {
+        retFromServer = JSON.parse(this.responseText);
+        
+      }
+      else {
+          retFromServer = null;
+      }
+      
+    };
+    var returnValue;
+    window.setTimeout(() => { 
+        
+        if (retFromServer === null) {
+            returnValue = false;
+        }
+        else {
+            returnValue = true;
+        }
+        fn(returnValue);
+        
+    }, 100);
+
+
+    xhttp.open("GET", 'http://localhost:3000/api/players/' + username, true);
+    xhttp.send();
+}
+
+function getPlayer(username, fn) {
+    let xhttp = new XMLHttpRequest();
+    var retFromServer = null;
+    xhttp.onreadystatechange=function() {
+      if (this.readyState === 4 && this.status == 200) {
+        retFromServer = JSON.parse(this.responseText);
+        
+      }
+      else {
+          retFromServer = null;
+      }
+      
+    };
+    var returnValue;
+    window.setTimeout(() => { 
+        
+        if (retFromServer === null) {
+            returnValue = null;
+        }
+        else {
+            returnValue = retFromServer;
+        }
+        fn(returnValue);
+        
+    }, 100);
+
+
+    xhttp.open("GET", 'http://localhost:3000/api/players/' + username, true);
+    xhttp.send();
+}
+
+function registerPlayer(username) {
+    let xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange=function() {
+      if (this.readyState == 4 && this.status == 200) {
+      }
+    };
+    xhttp.open("POST", 'http://localhost:3000/api/players/' + username, true);
+    xhttp.send();
+}
+
+function signIn(username) {
+    localStorage.setItem('username', username);
+    document.getElementById('username').textContent = "Username: " + username;
+
+    isUserRegistered(username, function(something) {
+            
+        if (something) {
+            signIn(username);
+        }
+        else {
+            console.log('user is not registered!');
+        }
+    });
+
+    getPlayer(username, function(player) {
+        if (player === null) {
+            return;
+        }
+        else {
+            let high = 0;
+            for (let i = 0; i < player.scores.length; i++) {
+                if (player.scores[i] > high) {
+                    high = player.scores[i];
+                }
+            }
+            document.getElementById('highScore').textContent = "High score: " + high;
+        }
+    });
+    
+    displayHeader();
 }
 
 main();

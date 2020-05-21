@@ -7,12 +7,15 @@ const players = require('./players.json');
 
 let corsOptions = {
     origin: '*',
-    optionsSuccessStatus: 200
+    
+    optionsSuccessStatus: 200,
+    "Access-Control-Allow-Origin": "*"
 };
 
 const app = express();
 app.use(bodyParser.json());
 app.use(cors(corsOptions));
+
 
 function findPlayer(username) {
     return players.find(player => {
@@ -26,7 +29,7 @@ function addPlayer(username) {
     }) === undefined) {
         players.push({
             username: username,
-            score: 0
+            scores: []
         });
         fs.writeFile('players.json', JSON.stringify(players), () => {});
     }
@@ -35,7 +38,7 @@ function addPlayer(username) {
 function changeScore(username, score) {
     for (let i = 0; i < players.length; i++) {
         if (username === players[i].username) {
-            players[i].score = score;
+            players[i].scores.push(score);
             fs.writeFile('players.json', JSON.stringify(players), () => {});
             return;
         }
@@ -55,22 +58,33 @@ app.route('/api/players').get((request, response) => {
     response.send(players);
 });
 
+app.route('/api/players/:username').get((request, response) => {
+    let ret = findPlayer(request.params['username']);
+    if (ret === undefined) {
+        response.status(404).send(null);
+    }
+    else {
+        response.status(200).send(ret);
+    }
+});
+
+
 app.route('/api/players/:username').post((request, response) => {
     addPlayer(request.params['username']);
-    response.status(200);
+    response.status(200).send('registered!');
 });
 
 app.route('/api/players/:username/:score').put((request, response) => {
     changeScore(request.params['username'], Number(request.params['score']));
-    response.status(200);
+    response.status(200).send('updated');
 });
 
 app.route('/api/players/:username').delete((request, response) => {
     deleteUser(request.params['username']);
-    response.status(200);
+    response.status(200).send('user deleted');
 });
 
 
-app.listen(8888, () => {
-    console.log("server is active at: localhost:8888");
+app.listen(3000, () => {
+    console.log("server is active at: localhost:3000");
 });

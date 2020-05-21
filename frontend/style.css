@@ -17,9 +17,25 @@ body {
     text-shadow: 1px 1px black;
     font-weight: bolder;
     font-family: lobster;
-    font-size:50px;
+    font-size: 50px;
     cursor: pointer;
+    
+    
 }
+
+#headerInfo {
+    height: 100px;
+}
+
+#playerInfo {
+    display:inline;
+    position: relative;
+    left: 1000px;
+    bottom: 70px;
+    font-family: "lobster";
+    color: darkolivegreen;
+}
+
 
 #start:hover {
     background-color: palegoldenrod;;
@@ -27,6 +43,13 @@ body {
 
 #start:active {
     text-shadow: 3px 3px black;
+}
+
+#registerSignIn {
+    position: relative;
+    top: 10px;
+    height: 100px;
+    text-align: center;
 }
 
 #informationWrapper {
@@ -146,6 +169,8 @@ body {
     font-size: 20px;
 }
 
+
+
 .buttons {
     font-family: "lobster";
     position: relative;
@@ -153,7 +178,35 @@ body {
     color: darkolivegreen;
     background-color: papayawhip;
     border: 2px solid gray;
+    cursor: pointer;
 }
+
+.buttonsHome {
+    font-family: "lobster";
+    position: relative;
+    width: 100px;
+    height: 50px;
+    color: darkolivegreen;
+    background-color: papayawhip;
+    border: 2px solid gray;
+    cursor: pointer;
+}
+
+.buttonsEnter {
+    font-family: "lobster";
+    position: relative;
+    top: 20px;
+    width: 150px;
+    color: darkolivegreen;
+    background-color: papayawhip;
+    border: 2px solid gray;
+    cursor: pointer;
+    display: none;
+    z-index: 10;
+
+}
+
+
 
 #buttonYes {
     left: 100px;
@@ -163,6 +216,14 @@ body {
     left: 200px;
 }
 
-.buttons:hover {
+.buttons:hover, .buttonsHome:hover, .buttonsEnter:hover {
     background-color: gray;
+}
+
+#inputUsername {
+    display: none;
+    text-align: center;
+    position: relative;
+    left: 375px;
+    top: 10px;
 }
