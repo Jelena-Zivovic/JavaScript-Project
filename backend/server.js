@@ -25,14 +25,16 @@ function findPlayer(username) {
 
 function addPlayer(username) {
     if (players.find(player => {
-        return player.username === username
-    }) === undefined) {
+        return player.username === username}) === undefined) {
         players.push({
             username: username,
             scores: []
         });
         fs.writeFile('players.json', JSON.stringify(players), () => {});
+        return true;
     }
+    return false;
+
 }
 
 function changeScore(username, score) {
@@ -40,9 +42,10 @@ function changeScore(username, score) {
         if (username === players[i].username) {
             players[i].scores.push(score);
             fs.writeFile('players.json', JSON.stringify(players), () => {});
-            return;
+            return true;
         }
     }
+    return false;
 }
 
 function deleteUser(username) {
@@ -51,6 +54,26 @@ function deleteUser(username) {
         let index = players.indexOf(player);
         players.splice(index, 1);
         fs.writeFile('players.json', JSON.stringify(players), () => {});
+        return true;
+    }
+    return false;
+}
+
+function getPlayerHighScore(username) {
+    let player = findPlayer(username);
+    
+    if (player === undefined) {
+        return null;
+    }
+    else {
+        let max = 0;
+        for (let i = 0; i < player.scores.length; i++) {
+            if (player.scores[i] > max) {
+                max = player.scores[i];
+            }
+        }
+        
+        return max;
     }
 }
 
@@ -60,28 +83,31 @@ app.route('/api/players').get((request, response) => {
 
 app.route('/api/players/:username').get((request, response) => {
     let ret = findPlayer(request.params['username']);
-    if (ret === undefined) {
-        response.status(404).send(null);
-    }
-    else {
-        response.status(200).send(ret);
-    }
+
+    response.send(ret);
 });
 
 
 app.route('/api/players/:username').post((request, response) => {
-    addPlayer(request.params['username']);
-    response.status(200).send('registered!');
+    response.send(addPlayer(request.params['username']));
 });
 
 app.route('/api/players/:username/:score').put((request, response) => {
-    changeScore(request.params['username'], Number(request.params['score']));
-    response.status(200).send('updated');
+    response.send(changeScore(request.params['username'], Number(request.params['score'])));
 });
 
 app.route('/api/players/:username').delete((request, response) => {
-    deleteUser(request.params['username']);
-    response.status(200).send('user deleted');
+    response.send(deleteUser(request.params['username']));
+});
+
+app.route('/api/players/highScore/:username').get((request, response) => {
+    let score = getPlayerHighScore(request.params['username']);
+    if (score !== null) {
+        response.send(score.toString());
+    }
+    else {
+        response.send(score);
+    }
 });
 
 

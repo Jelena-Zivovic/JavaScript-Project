@@ -241,8 +241,8 @@ var timerChangingImages;
 
 function main() {
 
-    displayHeader();
-    
+    logout();
+
     information = new Information();
     information.setInformation();
 
@@ -272,47 +272,43 @@ function main() {
     });
 
     document.getElementById('buttonRegister').addEventListener('click', () => {
-
         let username = document.getElementById('inputUsername').value;
 
-        isUserRegistered(username, function(something) {
-            console.log(something);
-            if (!something) {
-                registerPlayer(username);
-            }
-            else {
-                console.log('user is already registered!');
-            }
-        });
-
-       
+        registerPlayer(username);
+        
         
     });
 
     document.getElementById('buttonSignIn').addEventListener('click', () => {
-
         let username = document.getElementById('inputUsername').value;
 
-        isUserRegistered(username, function(something) {
-            
-            if (something) {
-                signIn(username);
-            }
-            else {
-                console.log('user is not registered!');
-            }
-        });
-
-       
+        signIn(username);
+        
         
     });
 
     document.getElementById('logout').addEventListener('click', () => {
-        localStorage.clear();
-        displayHeader();
+        logout();
+        
     });
     
     
+    
+}
+
+function logout() {
+    document.getElementById('playerInfo').style.display = 'none';
+    localStorage.clear();
+    displayHeader();
+    
+}
+
+function updatePlayerInfo() {
+    document.getElementById('username').textContent = 'Username: ' + localStorage.getItem('username');
+    document.getElementById('highScore').textContent =  
+                    getPlayerHighScore(localStorage.getItem('username'));
+
+    document.getElementById('playerInfo').display = 'inline';
 }
 
 function displayHeader() {
@@ -392,10 +388,12 @@ function offeredImageClicked(imageNumber) {
 
 function gameOver() {
 
+    indicatorGameEnded = true;
+
     updateScore(localStorage.getItem('username'), information.score);
     
+    document.getElementById('highScore').textContent = getPlayerHighScore(localStorage.getItem('username'));
 
-    indicatorGameEnded = true;
 
     document.getElementById("start").style.opacity = "50%";
     document.getElementById("informationWrapper").style.opacity = "50%";
@@ -408,11 +406,11 @@ function gameOver() {
 
     if (information.score == 45) { 
         animation.style.backgroundImage = "url('pictures/winner.png')";
-        timerAnimation = setInterval(move, 2);
+        timerAnimation = setInterval(move, 3);
     }
     else {
         animation.style.backgroundImage = "url('pictures/loser.png')";
-        timerAnimation = setInterval(move, 2);
+        timerAnimation = setInterval(move, 3);
     }
 }
 
@@ -459,130 +457,159 @@ function checkIfPlayerWantsToPlayAgain() {
 
 
 function updateScore(username, score) {
-    let xhttp = new XMLHttpRequest();
     
-    xhttp.onreadystatechange=function() {
-      if (this.readyState == 4 && this.status == 200) {
-      }
-    };
-    xhttp.open("PUT", 'http://localhost:3000/api/players/' + username + '/' + score, true);
-    xhttp.send();
+    let promise = new Promise((resolve, reject) => {
+        let xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+                if (this.responseText === 'true') {
+                    resolve('score successfully updated');
+                }
+                else {
+                    reject('error while updating score');
+                }
+            }
+        }
+        xhttp.open("PUT", 'http://localhost:3000/api/players/' + username + '/' + score, true);
+        xhttp.send();
+    });
+
+    promise.then(
+        (result) => { console.log(result); },
+        (error) => { console.log(error); }
+    );
+
+    
 
 }
 
 function deletePlayer(username) {
-    let xhttp = new XMLHttpRequest();
     
-    xhttp.onreadystatechange=function() {
-      if (this.readyState == 4 && this.status == 200) {
-      }
-    };
-    xhttp.open("DELETE", 'http://localhost:3000/api/players/' + username , true);
-    xhttp.send();
+    let promise = new Promise((resolve, reject) => {
+        let xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+                if (this.responseText === 'text') {
+                    resolve('player is deleted');
+                }
+                else {
+                    resolve('error while deleting player');
+                }
+            }
+        }
+        xhttp.open("DELETE", 'http://localhost:3000/api/players/' + username, true);
+        xhttp.send();
+    });
+
+    promise.then(
+        (result) => {console.log(result);},
+        (error) => {console.log(error);}
+    );
+
+
+
 }
 
 
-function isUserRegistered(username, fn) {
-    let xhttp = new XMLHttpRequest();
-    var retFromServer = null;
-    xhttp.onreadystatechange=function() {
-      if (this.readyState === 4 && this.status == 200) {
-        retFromServer = JSON.parse(this.responseText);
-        
-      }
-      else {
-          retFromServer = null;
-      }
-      
-    };
-    var returnValue;
-    window.setTimeout(() => { 
-        
-        if (retFromServer === null) {
-            returnValue = false;
-        }
-        else {
-            returnValue = true;
-        }
-        fn(returnValue);
-        
-    }, 100);
+function isUserRegistered(username) {
 
+    if (getPlayer(username) === null) {
+        return false;
+    }
+    else {
+        return true;
+    }
 
-    xhttp.open("GET", 'http://localhost:3000/api/players/' + username, true);
-    xhttp.send();
 }
 
-function getPlayer(username, fn) {
-    let xhttp = new XMLHttpRequest();
-    var retFromServer = null;
-    xhttp.onreadystatechange=function() {
-      if (this.readyState === 4 && this.status == 200) {
-        retFromServer = JSON.parse(this.responseText);
-        
-      }
-      else {
-          retFromServer = null;
-      }
-      
-    };
-    var returnValue;
-    window.setTimeout(() => { 
-        
-        if (retFromServer === null) {
-            returnValue = null;
-        }
-        else {
-            returnValue = retFromServer;
-        }
-        fn(returnValue);
-        
-    }, 100);
+function getPlayer(username) {
 
+    let promise = new Promise((resolve, reject) => {
+        let xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+                if (this.responseText === 'undefined') {
+                    reject(null);
+                }
+                else {
+                    resolve(this.response);
+                }
+            }
+        }
 
-    xhttp.open("GET", 'http://localhost:3000/api/players/' + username, true);
-    xhttp.send();
+        xhttp.open("GET", 'http://localhost:3000/api/players/' + username, true);
+        xhttp.send();
+    });
+
+    promise.then(
+        (result) => {return result;},
+        (error) => {return error;}
+    );
+
 }
 
 function registerPlayer(username) {
-    let xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange=function() {
-      if (this.readyState == 4 && this.status == 200) {
-      }
-    };
-    xhttp.open("POST", 'http://localhost:3000/api/players/' + username, true);
-    xhttp.send();
+
+    let promise = new Promise((resolve, reject) => {
+        let xhttp = new XMLHttpRequest;
+        xhttp.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+                
+                if (this.responseText === 'true') {
+                    resolve('user is registered');
+                }
+                else {
+                    reject('user is already registered');
+                }
+            }
+            
+            
+        }
+
+        xhttp.open("POST", 'http://localhost:3000/api/players/' + username, true);
+        xhttp.send();
+
+    });
+
+    promise.then((result) => {console.log(result)}, (error) => {alert(error)});
+}
+
+function getPlayerHighScore(username) {
+    let promise = new Promise((resolve, reject) => {
+        let xhttp = new XMLHttpRequest;
+        xhttp.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+                console.log(this.response);
+                if (this.responseText === 'null') {
+                    reject(null);
+                }
+                else {
+
+                    resolve(this.responseText);
+                }
+            }
+            
+            
+        }
+
+        xhttp.open("GET", 'http://localhost:3000/api/players/highScore/' + username, true);
+        xhttp.send();
+    });
+    
+    promise.then(
+        (result) => {
+            document.getElementById('highScore').textContent = 'High score: ' + result;
+        },
+        (error) => {
+            alert(error);
+        }
+    );
 }
 
 function signIn(username) {
     localStorage.setItem('username', username);
-    document.getElementById('username').textContent = "Username: " + username;
+    updatePlayerInfo();
 
-    isUserRegistered(username, function(something) {
-            
-        if (something) {
-            signIn(username);
-        }
-        else {
-            console.log('user is not registered!');
-        }
-    });
-
-    getPlayer(username, function(player) {
-        if (player === null) {
-            return;
-        }
-        else {
-            let high = 0;
-            for (let i = 0; i < player.scores.length; i++) {
-                if (player.scores[i] > high) {
-                    high = player.scores[i];
-                }
-            }
-            document.getElementById('highScore').textContent = "High score: " + high;
-        }
-    });
-    
     displayHeader();
 }
 
