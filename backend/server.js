@@ -159,6 +159,6 @@ app.route('/api/players/highScore/:username').get((request, response) => {
 });
 
 
-app.listen(3000, () => {
+app.listen(8888, () => {
     console.log("server is active at: localhost:3000");
 });

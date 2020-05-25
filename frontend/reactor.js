@@ -501,7 +501,7 @@ function deletePlayer(username) {
                 }
             }
         }
-        xhttp.open("DELETE", 'http://localhost:3000/api/players/' + username, true);
+        xhttp.open("DELETE", 'http://localhost:8888/api/players/' + username, true);
         xhttp.send();
     });
 
@@ -529,7 +529,7 @@ function getPlayer(username) {
             }
         }
 
-        xhttp.open("GET", 'http://localhost:3000/api/players/' + username, true);
+        xhttp.open("GET", 'http://localhost:8888/api/players/' + username, true);
         xhttp.send();
     });
 
@@ -553,7 +553,7 @@ function getAllPlayers() {
 
         }
 
-        xhttp.open("GET", 'http://localhost:3000/api/players', true);
+        xhttp.open("GET", 'http://localhost:8888/api/players', true);
         xhttp.send();
         
     });
@@ -578,7 +578,7 @@ function registerPlayer(username) {
             } 
         }
 
-        xhttp.open("POST", 'http://localhost:3000/api/players/' + username, true);
+        xhttp.open("POST", 'http://localhost:8888/api/players/' + username, true);
         xhttp.send();
 
     });
@@ -643,7 +643,7 @@ function updateUserScore(username) {
             }
         }
 
-        xhttp.open("PUT", 'http://localhost:3000/api/players/' + username + '/' + information.score, true);
+        xhttp.open("PUT", 'http://localhost:8888/api/players/' + username + '/' + information.score, true);
         xhttp.send();
     });
 
