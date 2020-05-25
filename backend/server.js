@@ -1,9 +1,28 @@
+'use strict';
+
 const express = require('express');
 const bodyParser = require('body-parser');
-const fs = require('fs');
 const cors = require('cors');
 
-const players = require('./players.json');
+var mongoClient = require('mongodb').MongoClient;
+var url = 'mongodb://localhost:27017/database';
+
+mongoClient.connect(url, (error, db) => {
+    if (error) {
+        throw error;
+    }
+    
+    var dbo = db.db();
+    dbo.createCollection('players', (err, res) => {
+        if (err) {
+            throw err;
+        }
+        console.log('collection created');
+        db.close();
+    });
+
+   
+});
 
 let corsOptions = {
     origin: '*',
@@ -17,87 +36,116 @@ app.use(bodyParser.json());
 app.use(cors(corsOptions));
 
 
-function findPlayer(username) {
-    return players.find(player => {
-        return player.username === username
-    });
-}
-
-function addPlayer(username) {
-    if (players.find(player => {
-        return player.username === username}) === undefined) {
-        players.push({
-            username: username,
-            scores: []
-        });
-        fs.writeFile('players.json', JSON.stringify(players), () => {});
-        return true;
-    }
-    return false;
-
-}
-
-function changeScore(username, score) {
-    for (let i = 0; i < players.length; i++) {
-        if (username === players[i].username) {
-            players[i].scores.push(score);
-            fs.writeFile('players.json', JSON.stringify(players), () => {});
-            return true;
-        }
-    }
-    return false;
-}
-
-function deleteUser(username) {
-    let player = findPlayer(username);
-    if (player !== undefined) {
-        let index = players.indexOf(player);
-        players.splice(index, 1);
-        fs.writeFile('players.json', JSON.stringify(players), () => {});
-        return true;
-    }
-    return false;
-}
-
-function getPlayerHighScore(username) {
-    let player = findPlayer(username);
-    
-    if (player === undefined) {
-        return null;
-    }
-    else {
-        let max = 0;
-        for (let i = 0; i < player.scores.length; i++) {
-            if (player.scores[i] > max) {
-                max = player.scores[i];
-            }
-        }
-        
-        return max;
-    }
-}
-
 app.route('/api/players').get((request, response) => {
-    response.send(players);
+    mongoClient.connect(url, (error, db) => {
+        if (error) {
+            response.send(null);
+            throw error;
+        }
+
+        var dbo = db.db();
+        dbo.collection('players').find({}, {projection: {_id: 0, username: 1, scores: 1}}).toArray((err, res) => {
+            if (err) {
+                response.send(null);
+                throw err;
+            }
+
+            response.send(res);
+            db.close();
+        });
+    });
 });
 
 app.route('/api/players/:username').get((request, response) => {
-    let ret = findPlayer(request.params['username']);
-
-    response.send(ret);
+    
+    mongoClient.connect(url, (error, db) => {
+        if (error) {
+            throw error;
+        }
+        
+        var dbo = db.db();
+        let query = {username: request.params['username']};
+        dbo.collection('players').find(query).toArray((err, res) => {
+            if (err) {
+                throw err;
+            }
+            
+            if (res.length === 0) {
+                response.send(null);
+            }
+            else {
+                response.send({username: res[0].username, scores: res[0].scores});
+            }
+            db.close();
+            
+            
+        });
+    });
 });
 
 
 app.route('/api/players/:username').post((request, response) => {
-    response.send(addPlayer(request.params['username']));
+    mongoClient.connect(url, (error, db) => {
+        if (error) {
+            response.send(false);
+            throw error;
+        }
+        
+        var dbo = db.db();
+        dbo.collection('players').insertOne({username: request.params['username'], scores: []}, (err, res) => {
+            if (err) {
+                response.send(false);
+                throw err;
+            }
+            response.send(true);
+
+            db.close(); 
+        });
+    });
 });
 
 app.route('/api/players/:username/:score').put((request, response) => {
-    response.send(changeScore(request.params['username'], Number(request.params['score'])));
+    mongoClient.connect(url, (error, db) => {
+        if (error) {
+            response.send(false);
+            throw error;
+        }
+
+        var dbo = db.db();
+        var query = {username: request.params['username']};
+        var newValue = {$push : {scores: Number(request.params['score'])}};
+        dbo.collection('players').update(query, newValue, (err, res) => {
+            if (err) {
+                response.send(false);
+                throw error;
+            }
+            else {
+                response.send(true);
+            }
+
+            db.close();
+        });
+    });
 });
 
 app.route('/api/players/:username').delete((request, response) => {
-    response.send(deleteUser(request.params['username']));
+    mongoClient.connect(url, (error, db) => {
+        if (error) {
+            response.send(false);
+            throw error;
+        }
+        
+        var dbo = db.db();
+        dbo.collection('players').delete({username: request.params['username']}, (err, res) => {
+            if (err) {
+                response.send(false);
+                throw err;
+            }
+            response.send(true);
+
+            db.close(); 
+        });
+    });
 });
 
 app.route('/api/players/highScore/:username').get((request, response) => {
