@@ -1,0 +1,43 @@
+@font-face {
+    font-family: lobster;
+    src: url("../../assets/Lobster\ 1.4.otf");
+}
+
+.buttons {
+    font-family: "lobster";
+    position: relative;
+    width: 100px;
+    color: darkolivegreen;
+    background-color: papayawhip;
+    border: 2px solid gray;
+    cursor: pointer;
+}
+
+.buttonsHome {
+    font-family: "lobster";
+    position: relative;
+    width: 100px;
+    height: 50px;
+    color: darkolivegreen;
+    background-color: papayawhip;
+    border: 2px solid gray;
+    cursor: pointer;
+}
+
+.buttonsEnter {
+    font-family: "lobster";
+    position: relative;
+    top: 20px;
+    width: 150px;
+    color: darkolivegreen;
+    background-color: papayawhip;
+    border: 2px solid gray;
+    cursor: pointer;
+    display: none;
+    z-index: 10;
+
+}
+
+.buttons:hover, .buttonsHome:hover, .buttonsEnter:hover {
+    background-color: gray;
+}

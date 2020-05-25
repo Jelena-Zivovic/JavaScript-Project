@@ -1,0 +1,15 @@
+#registerSignIn {
+    position: relative;
+    top: 10px;
+    left: 120px;
+    height: 100px;
+    text-align: center;
+}
+
+#inputUsername {
+    display: inline;
+    text-align: center;
+    position: relative;
+    top: 40px;
+    right: 220px;
+}
