@@ -245,7 +245,6 @@ var userInfo = {
 
 function main() {
 
-    
     updateUserInfo(localStorage.getItem('username'));
     
     logout();
@@ -255,7 +254,6 @@ function main() {
 
     requiredImage = new RequiredImage("img_requiredImage");
     requiredImage.setImage();
-
 
     offeredImages = new OfferedImages();
     offeredImages.setImages(requiredImage.getImageNumber());
@@ -292,9 +290,7 @@ function main() {
                 }
             },
             (error) => {console.log(error);}
-        );
-        
-        
+        );  
     });
 
     document.getElementById('buttonSignIn').addEventListener('click', () => {
@@ -319,9 +315,6 @@ function main() {
         logout();
         
     });
-    
-    
-    
 }
 
 function checkIfUsernameIsUnique(username, players) {
@@ -339,7 +332,6 @@ function logout() {
     displayHeader();
     
 }
-
 
 function displayHeader() {
     document.getElementById('start').style.opacity = isSomeoneLoggedIn() ? '100%' : '50%';
@@ -616,8 +608,6 @@ function updateUserInfo(username) {
             console.log(error);
         }
     );
-
-   
 
 }
 
