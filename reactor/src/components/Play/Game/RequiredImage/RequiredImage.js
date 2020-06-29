@@ -5,16 +5,23 @@ class RequiredImage extends React.Component {
 
     constructor(props) {
         super(props);
-        let randomNumber = Math.ceil(Math.random()*30);
-        let imageSrc = "JavaScript-Project/reactor/src/assets/pictures/level_1/" + randomNumber + ".png";
-        console.log(imageSrc);
-        this.state = {imageSrc: imageSrc}
+        this.info = {
+            level: this.props.level,
+            score: this.props.score,
+            number: this.props.requiredImageNumber
+        };
+        
+        this.image = require("../../../../assets/pictures/level_" + 
+                            this.info.level + "/" + this.info.number + ".png")
+        
     }
 
     render() {
+
+        
         return (
             <div id="requiredImageWrapper">
-                <img id="img_requiredImage" src={this.state.imageSrc} alt=""/>
+                <img id="img_requiredImage" src={this.image} alt=""/>
             </div>
         );
     }

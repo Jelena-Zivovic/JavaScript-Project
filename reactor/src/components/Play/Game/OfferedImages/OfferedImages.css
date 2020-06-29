@@ -1,7 +1,9 @@
 #offeredImagesWrapper {
-    display: none;
+    display: block;
     width: 1000px;
     height: 150px;
+    position: relative;
+    bottom: 50px;
 }
 
 .offeredImages {
