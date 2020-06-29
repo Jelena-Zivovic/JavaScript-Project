@@ -6,18 +6,18 @@ class Information extends React.Component {
     render() {
         return (
             <div id="informationWrapper">
-                <div id="levelWrapper" class="informationDivs">
-                    <p id="level" class="informationParagraphs">
+                <div id="levelWrapper" className="informationDivs">
+                    <p id="level" className="informationParagraphs">
                         Level
                     </p>
                 </div>
-                <div id="timeWrapper" class="informationDivs">
-                    <p id="time" class="informationParagraphs">
+                <div id="timeWrapper" className="informationDivs">
+                    <p id="time" className="informationParagraphs">
                         Time
                     </p>
                 </div>
-                <div id="scoreWrapper" class="informationDivs">
-                    <p id="score" class="informationParagraphs">
+                <div id="scoreWrapper" className="informationDivs">
+                    <p id="score" className="informationParagraphs">
                         Score
                     </p>
                 </div>
