@@ -1,0 +1,21 @@
+#start {
+    color:darkolivegreen;
+    text-align: center;
+    text-shadow: 1px 1px black;
+    font-weight: bolder;
+    font-family: lobster;
+    font-size: 50px;
+    cursor: pointer;
+    position: relative;
+    bottom: 20px;
+    
+    
+}
+
+#start:hover {
+    background-color: palegoldenrod;;
+}
+
+#start:active {
+    text-shadow: 3px 3px black;
+}
