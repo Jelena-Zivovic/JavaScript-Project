@@ -12,3 +12,18 @@ body {
   
 }
 
+.buttons {
+  font-family: "lobster";
+  position: relative;
+  width: 100px;
+  color: darkolivegreen;
+  background-color: papayawhip;
+  border: 2px solid gray;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.buttons:hover {
+  background-color: gray;
+}
+
