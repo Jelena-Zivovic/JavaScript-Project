@@ -5,23 +5,39 @@ class RequiredImage extends React.Component {
 
     constructor(props) {
         super(props);
-        this.info = {
+        
+        
+        let image = require("../../../../assets/pictures/level_" + 
+                            this.props.level + "/" + this.props.requiredImageNumber + ".png");
+        
+        this.state = {
             level: this.props.level,
-            score: this.props.score,
+            image: image,
             number: this.props.requiredImageNumber
         };
-        
-        this.image = require("../../../../assets/pictures/level_" + 
-                            this.info.level + "/" + this.info.number + ".png")
+
+                    
         
     }
 
-    render() {
+    UNSAFE_componentWillReceiveProps(nextProps) {
 
-        
+        let image = require("../../../../assets/pictures/level_" + 
+            nextProps.level + "/" + nextProps.requiredImageNumber + ".png");
+
+        this.setState({
+            level: nextProps.level,
+            image: image,
+            number: nextProps.requiredImageNumber
+        }, () => {
+
+        });
+    }
+
+    render() {
         return (
             <div id="requiredImageWrapper">
-                <img id="img_requiredImage" src={this.image} alt=""/>
+                <img id="img_requiredImage" src={this.state.image} alt=""/>
             </div>
         );
     }

@@ -23,7 +23,8 @@ class Game extends React.Component {
             level: level,
             score: score,
             requiredImage: requiredImage,
-            offeredImages: offeredImages
+            offeredImages: offeredImages,
+            time: "02:50"
         };
         
     }
@@ -62,19 +63,25 @@ class Game extends React.Component {
             
             let requiredImage = Math.ceil(Math.random()*30);
             let offeredImages = this.shuffle(this.getDifferentRandomNumbers(requiredImage));
-
+            
             let score = this.state.score + 1;
             let level = 0;
+            let time = this.state.time;
 
             if (score < 15) {
                 level = 1;
+                time = "02:50";
             }
             else if (score >= 15 && score < 30) {
                 level = 2;
+                time = "02:30";
             }
             else {
                 level = 3;
+                time = "02:00";
             }
+
+            this.props.gameInfoChanged({level: level, score: score, time: time});
 
             this.setState({
                 level: level,
@@ -83,7 +90,15 @@ class Game extends React.Component {
                 offeredImages: offeredImages
             });
             
+
+            
+            
         }
+        else {
+            this.props.onGameOver();
+        }
+
+        
         
     }
 

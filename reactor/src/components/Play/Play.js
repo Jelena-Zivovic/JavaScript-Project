@@ -6,12 +6,107 @@ import Game from './Game';
 
 class Play extends React.Component {
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            level: 1, 
+            score: 0,
+            didGameStart: false,
+            time: "02:50"
+        };
+
+        this.timerChanging = null;
+
+        this.sendInformation = this.sendInformation.bind(this);
+        this.startGame = this.startGame.bind(this);
+        this.changeTime = this.changeTime.bind(this);
+        this.gameOver = this.gameOver.bind(this);
+
+    }
+
+    sendInformation(info) {
+        
+        this.setState({
+            level: info.level,
+            score: info.score,
+            time: info.time,
+            didGameStart: this.state.didGameStart
+        });
+
+    }
+
+    startGame() {
+        document.getElementById("start").style.opacity = "50%";
+        this.setState({
+            level: 1,
+            score: 0,
+            didGameStart: true,
+            time: "02:50"
+        });
+
+        this.timerChanging = setInterval(this.changeTime, 10);
+
+    } 
+
+    changeTime() {
+        let currentTimeSeconds = Number(this.state.time.substring(0, 2));
+        let currentTimeHundredth = Number(this.state.time.substring(3));
+
+        if (currentTimeSeconds === 0 && currentTimeHundredth === 0) {
+            this.gameOver();
+        }
+        else {
+            if (currentTimeHundredth === 0) {
+                currentTimeSeconds--;
+                currentTimeHundredth = 99;
+                this.setState({
+                    level: this.state.level,
+                    time: "0" + currentTimeSeconds + ":" + currentTimeHundredth,
+                    score: this.state.score,
+                    didGameStart: true
+                
+                });
+            }
+            else {
+                currentTimeHundredth--;
+                if (currentTimeHundredth < 10) {
+                    this.setState({
+                        level: this.state.level,
+                        time: "0" + currentTimeSeconds + ":0" + currentTimeHundredth,
+                        score: this.state.score,
+                        didGameStart: true
+                    });
+                }
+                else {
+                    this.setState({
+                        level: this.state.level,
+                        time: "0" + currentTimeSeconds + ":" + currentTimeHundredth,
+                        score: this.state.score,
+                        didGameStart: true
+                    
+                    });
+                }
+            }
+        }
+
+    }
+
+    gameOver() {
+        clearInterval(this.timerChanging);
+        document.getElementById("informationWrapper").style.opacity = "50%";
+        document.getElementById("requiredImageWrapper").style.opacity = "50%";
+        document.getElementById("offeredImagesWrapper").style.opacity = "50%";
+        console.log("game over");
+    }
+
     render() {
         return (
             <div>
-                <p id="start">Start!</p>
-                <Information />
-                <Game />
+                <p id="start" onClick={this.startGame}>Start!</p>
+                <Information infoToShow={this.state}/>
+                <Game gameInfoChanged={this.sendInformation}
+                      onGameOver={this.gameOver}/>
             </div>
         );
     }
