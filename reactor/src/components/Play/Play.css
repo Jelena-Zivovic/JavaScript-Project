@@ -19,3 +19,23 @@
 #start:active {
     text-shadow: 3px 3px black;
 }
+
+#pictureLoser {
+    display: none;
+    width: 300px;
+    height: 300px;
+    position: absolute;
+    left: 500px;
+    border-radius: 50px;
+    overflow: hidden;
+}
+
+#pictureWinner {
+    display: none;
+    width: 300px;
+    height: 300px;
+    position: absolute;
+    left: 500px;
+    border-radius: 50px;
+    overflow: hidden;
+}

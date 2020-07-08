@@ -23,6 +23,11 @@ class Play extends React.Component {
         this.changeTime = this.changeTime.bind(this);
         this.gameOver = this.gameOver.bind(this);
 
+        this.imageLoser = require("../../assets/pictures/loser.png");
+        this.imageWinner = require("../../assets/pictures/winner.png");
+
+        
+
     }
 
     sendInformation(info) {
@@ -37,7 +42,13 @@ class Play extends React.Component {
     }
 
     startGame() {
-        document.getElementById("start").style.opacity = "50%";
+        document.getElementById("informationWrapper").style.opacity = "100%";
+        document.getElementById("requiredImageWrapper").style.opacity = "100%";
+        document.getElementById("offeredImagesWrapper").style.opacity = "100%";
+        document.getElementById("pictureWinner").style.display = "none";
+        document.getElementById("pictureLoser").style.display = "none";
+
+
         this.setState({
             level: 1,
             score: 0,
@@ -95,15 +106,26 @@ class Play extends React.Component {
     gameOver() {
         clearInterval(this.timerChanging);
         document.getElementById("informationWrapper").style.opacity = "50%";
-        document.getElementById("requiredImageWrapper").style.opacity = "50%";
+        document.getElementById("requiredImageWrapper").style.opacity = "0%";
         document.getElementById("offeredImagesWrapper").style.opacity = "50%";
-        console.log("game over");
+        if (this.state.score === 45) {
+            document.getElementById("pictureWinner").style.display = "block";
+        }
+        else {
+            document.getElementById("pictureLoser").style.display = "block";
+        }
     }
 
     render() {
         return (
             <div>
                 <p id="start" onClick={this.startGame}>Start!</p>
+                <div id="pictureLoser">
+                    <img src={this.imageLoser} alt=""/>
+                </div>
+                <div id="pictureWinner">
+                    <img src={this.imageWinner} alt=""/>
+                </div>
                 <Information infoToShow={this.state}/>
                 <Game gameInfoChanged={this.sendInformation}
                       onGameOver={this.gameOver}/>
