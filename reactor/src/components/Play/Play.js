@@ -118,6 +118,33 @@ class Play extends React.Component {
             document.getElementById("pictureLoser").style.display = "block";
         }
 
+        if (localStorage.length !== 0) {
+            const username = localStorage.getItem("username");
+
+            let promise = new Promise((resolve, reject) => {
+                let xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState === 4 && this.status === 200) {
+                        if (this.responseText === "true") {
+                            resolve("score updated");
+                        }
+                        else {
+                            resolve("error while updating score");
+                        }
+                    }
+                }
+
+                xhttp.open("PUT", "http://localhost:8888/api/players/" + username + "/" + this.state.score, true);
+                xhttp.send();
+            });
+
+            promise.then(result => {
+                console.log(result);
+            });
+
+
+        }
+
         this.setState({
             level: 1,
             score: 0,

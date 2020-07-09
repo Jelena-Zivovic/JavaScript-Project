@@ -17,6 +17,9 @@ class Header extends React.Component {
                 <Link to="/register">
                     <button className="buttons">Register</button>
                 </Link>
+                <Link to="/playerInfo">
+                    <button className="buttons">Player info</button>
+                </Link>
             </div>
         );
     }

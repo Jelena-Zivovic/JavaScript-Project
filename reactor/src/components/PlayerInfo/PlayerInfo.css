@@ -1,0 +1,15 @@
+#playerInfoContainer {
+    text-align: center;
+    font-family: lobster;
+    color: darkolivegreen;
+
+    
+}
+
+#userInfoContainer {
+    border: 2px solid darkolivegreen;
+    padding: 10px;
+    position: relative;
+    top: 100px;
+    font-size: 30px;
+}

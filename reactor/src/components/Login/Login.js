@@ -51,15 +51,26 @@ class Login extends React.Component {
                 alert("user is not registered");
             }
             else {
+                const data = JSON.parse(result);
                 this.dataToSend = {
                     username: this.state.username,
-                    scores: result.scores
+                    scores: data.scores
                 };
+                localStorage.setItem("username", this.state.username);
+                let high = 0;
+                for (let i = 0; i < data.scores.length; i++) {
+                    if (data.scores[i] > high) {
+                        high = data.scores[i];
+                    }
+                }
+                localStorage.setItem("score", high);
+                
                 this.setState({
-                    username: result.username
+                    username: data.username
                 });
+                
             }
-        })
+        });
        
 
         

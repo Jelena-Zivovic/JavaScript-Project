@@ -65,6 +65,7 @@ class Game extends React.Component {
             let offeredImages = this.shuffle(this.getDifferentRandomNumbers(requiredImage));
             
             let score = this.state.score + 1;
+
             let level = 0;
             let time = this.state.time;
 

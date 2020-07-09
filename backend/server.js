@@ -138,7 +138,7 @@ app.route('/api/players/:username').delete((request, response) => {
         }
         
         var dbo = db.db();
-        dbo.collection('players').delete({username: request.params['username']}, (err, res) => {
+        dbo.collection('players').deleteOne({username: request.params['username']}, (err, res) => {
             if (err) {
                 response.send(false);
                 

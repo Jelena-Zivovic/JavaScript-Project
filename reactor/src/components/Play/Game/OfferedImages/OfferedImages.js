@@ -37,7 +37,7 @@ class OfferedImages extends React.Component {
 
         if (nextProps.level === 0) {
             return;
-        }
+        } 
 
         let images= [];
         
