@@ -139,7 +139,39 @@ class Play extends React.Component {
             });
 
             promise.then(result => {
-                console.log(result);
+                let promise1 = new Promise((resolve, reject) => {
+                    let xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function() {
+                        if (this.readyState === 4 && this.status === 200) {
+                            if (this.responseText === 'undefined') {
+                                reject(null);
+                            }
+                            else {
+                                resolve(this.response);
+                            }
+                        }
+                    }
+            
+                    xhttp.open("GET", 'http://localhost:8888/api/players/' + localStorage.getItem("username"), true);
+                    xhttp.send();
+                });
+
+
+                promise1.then(result => {
+                    if (result !== "") {
+                        let data = JSON.parse(result);
+                        let high = 0;
+
+                        for (let i = 0; i < data.scores.length; i++) {
+                            if (data.scores[i] > high) {
+                                high = data.scores[i];
+                            }
+                        }
+
+                        localStorage.setItem("score", high);
+                    }
+                });
+
             });
 
 

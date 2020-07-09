@@ -68,6 +68,9 @@ class Login extends React.Component {
                 this.setState({
                     username: data.username
                 });
+
+                document.getElementById("inputLogin").disabled = true;
+                document.getElementById("buttonLogin").disabled = true;
                 
             }
         });
@@ -85,9 +88,9 @@ class Login extends React.Component {
             <div id="formContaniner1">
                 <form onSubmit={this.handleSubmit}>
                     <label>Username:</label><br/><br/>
-                    <input type="text" value={this.state.username} onChange={this.handleChange} />
+                    <input id="inputLogin" type="text" value={this.state.username} onChange={this.handleChange} />
                     <br/><br/>
-                    <button type="submit" className="buttons">Log in</button>
+                    <button id="buttonLogin" type="submit" className="buttons">Log in</button>
                 </form>
                 <br/><hr/><br/><br/>
                 <UserInfo info={this.dataToSend}/>
