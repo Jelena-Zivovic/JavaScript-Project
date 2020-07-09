@@ -22,6 +22,11 @@ class RequiredImage extends React.Component {
 
     UNSAFE_componentWillReceiveProps(nextProps) {
 
+        if (nextProps.level === 0) {
+            return;
+        }
+
+
         let image = require("../../../../assets/pictures/level_" + 
             nextProps.level + "/" + nextProps.requiredImageNumber + ".png");
 

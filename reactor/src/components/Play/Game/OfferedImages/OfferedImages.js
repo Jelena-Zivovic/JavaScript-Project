@@ -35,6 +35,10 @@ class OfferedImages extends React.Component {
 
     UNSAFE_componentWillReceiveProps(nextProps) {
 
+        if (nextProps.level === 0) {
+            return;
+        }
+
         let images= [];
         
         

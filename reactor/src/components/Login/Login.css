@@ -1,0 +1,11 @@
+#formContaniner1 {
+    text-align: center;
+    position: relative;
+    top: 50px;
+    font-family: lobster;
+    color: darkolivegreen;
+}
+
+input {
+    border: 2px solid darkolivegreen;
+}

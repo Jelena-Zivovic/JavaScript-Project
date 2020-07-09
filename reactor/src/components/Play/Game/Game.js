@@ -76,9 +76,11 @@ class Game extends React.Component {
                 level = 2;
                 time = "02:30";
             }
-            else {
+            else if (score >= 30 && score < 45){
                 level = 3;
                 time = "02:00";
+            } else if (score === 45) {
+                this.props.onGameOver();
             }
 
             this.props.gameInfoChanged({level: level, score: score, time: time});

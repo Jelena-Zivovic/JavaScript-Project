@@ -104,16 +104,26 @@ class Play extends React.Component {
     }
 
     gameOver() {
+
+        
+
         clearInterval(this.timerChanging);
         document.getElementById("informationWrapper").style.opacity = "50%";
         document.getElementById("requiredImageWrapper").style.opacity = "0%";
         document.getElementById("offeredImagesWrapper").style.opacity = "50%";
-        if (this.state.score === 45) {
+        if (this.state.score === 44) {
             document.getElementById("pictureWinner").style.display = "block";
         }
         else {
             document.getElementById("pictureLoser").style.display = "block";
         }
+
+        this.setState({
+            level: 1,
+            score: 0,
+            didGameStart: false,
+            time: "02:50"
+        });
     }
 
     render() {
