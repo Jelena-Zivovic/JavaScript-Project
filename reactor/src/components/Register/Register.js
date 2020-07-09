@@ -1,6 +1,7 @@
 import React from 'react';
 import './Register.css';
 
+
 class Register extends React.Component {
 
     constructor(props) {
@@ -9,6 +10,7 @@ class Register extends React.Component {
         this.state = {
             username: ''
         };
+
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -21,10 +23,11 @@ class Register extends React.Component {
             xhttp.onreadystatechange = function() {
                 if (this.readyState === 4 && this.status === 200) {
                     if (this.responseText === 'true') {
-                        resolve('user is registered');
+                        
+                        resolve('User is registered!');
                     }
                     else {
-                        reject('user is already registered');
+                        reject('User is already registered!');
                     }
                 }
             }
@@ -33,7 +36,8 @@ class Register extends React.Component {
             xhttp.send();
         });
 
-        promise.then((result) => {console.log(result)}, (error) => {alert(error)});
+        promise.then((result) => {alert(result + " Now, go to Log in page!");}
+                   , (error) => {alert(error);});
 
         event.preventDefault(); 
 
@@ -50,7 +54,9 @@ class Register extends React.Component {
                     <label>Username:</label><br/><br/>
                     <input type="text" value={this.state.username} onChange={this.handleChange} />
                     <br/><br/>
-                    <button type="submit" className="buttons">Register</button>
+                   
+                    <button className="buttons">Register</button> 
+                    
                 </form>
             </div>
         );

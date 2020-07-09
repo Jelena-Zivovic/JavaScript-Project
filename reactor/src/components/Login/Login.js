@@ -1,5 +1,6 @@
 import React from 'react';
 import './Login.css';
+import UserInfo from './UserInfo';
 
 class Login extends React.Component {
 
@@ -7,6 +8,10 @@ class Login extends React.Component {
         super(props);
 
         this.state = {
+            username: ''
+        };
+
+        this.dataToSend = {
             username: '',
             scores: []
         };
@@ -15,14 +20,11 @@ class Login extends React.Component {
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.updateStateUser = this.updateStateUser.bind(this);
     }
 
     handleChange(event) {
 
-        this.setState({username: event.target.value, scores: []});
-        
-        
+        this.setState({username: event.target.value});
     }
 
     handleSubmit(event) {
@@ -44,38 +46,27 @@ class Login extends React.Component {
             xhttp.send();
         });
 
-        if (promise === null) {
-            alert("user is not registered!");
-            
-        }
-        else {
-            this.updateStateUser(promise);
-        }
+        promise.then(result => {
+            if (result === "") {
+                alert("user is not registered");
+            }
+            else {
+                this.dataToSend = {
+                    username: this.state.username,
+                    scores: result.scores
+                };
+                this.setState({
+                    username: result.username
+                });
+            }
+        })
+       
 
         
 
         event.preventDefault();
 
 
-    }
-
-    updateStateUser(promise) {
-        promise.then(result => {
-            if (result === "") {
-                this.setState({
-                    username: "",
-                    scores: []
-                });
-                alert("User is not registered!");
-                
-            }
-            else {
-                this.setState({
-                    username: result.username,
-                    scores: result.scores
-                });
-            }
-        });
     }
 
     render() {
@@ -87,6 +78,8 @@ class Login extends React.Component {
                     <br/><br/>
                     <button type="submit" className="buttons">Log in</button>
                 </form>
+                <br/><hr/><br/><br/>
+                <UserInfo info={this.dataToSend}/>
             </div>
         );
     }
