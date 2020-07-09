@@ -42,6 +42,7 @@ class Play extends React.Component {
     }
 
     startGame() {
+
         document.getElementById("informationWrapper").style.opacity = "100%";
         document.getElementById("requiredImageWrapper").style.opacity = "100%";
         document.getElementById("offeredImagesWrapper").style.opacity = "100%";
@@ -105,7 +106,12 @@ class Play extends React.Component {
 
     gameOver() {
 
-        
+        this.setState({
+            level: 1,
+            score: 0,
+            didGameStart: false,
+            time: "02:50"
+        });
 
         clearInterval(this.timerChanging);
         document.getElementById("informationWrapper").style.opacity = "50%";
@@ -177,12 +183,9 @@ class Play extends React.Component {
 
         }
 
-        this.setState({
-            level: 1,
-            score: 0,
-            didGameStart: false,
-            time: "02:50"
-        });
+        
+
+        
     }
 
     render() {
