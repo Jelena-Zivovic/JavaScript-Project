@@ -52,10 +52,24 @@ class Register extends React.Component {
             <div id="formContaniner">
                 <form onSubmit={this.handleSubmit}>
                     <label>Username:</label><br/><br/>
-                    <input type="text" value={this.state.username} onChange={this.handleChange} />
+                    { localStorage.length !== 0 &&
+                    <input type="text" 
+                           value={this.state.username} 
+                           onChange={this.handleChange}
+                           disabled />
+                    }   
+                    { localStorage.length === 0 &&
+                    <input type="text" 
+                           value={this.state.username} 
+                           onChange={this.handleChange} />
+                    } 
                     <br/><br/>
-                   
+                    { localStorage.length !== 0 &&
+                    <button className="buttons" disabled>Register</button> 
+                    }
+                    { localStorage.length === 0 &&
                     <button className="buttons">Register</button> 
+                    }
                     
                 </form>
             </div>
